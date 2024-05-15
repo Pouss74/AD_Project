@@ -1,27 +1,28 @@
+import streamlit as st
 from datetime import datetime
 
-import streamlit as st
+# Import the generate_asset_price_graph function from the backend
+from backend import generate_asset_price_graph
 
-## ICI il y aura la Web app qui appelle les différentes fonctions et trucs à afficher de backend.py
-# Supposons que votre script converti s'appelle notebook_script.py
-from backend import plotAssetPrice
+# Application title
+st.title('Asset Price Visualization Application')
 
-# Titre de l'application
-st.title('Application Web utilisant Streamlit et un Notebook Jupyter')
+# Asset selection
+asset_name = st.selectbox('Select an asset',
+                          options=['S&P 500 PRICE IN USD', 'GOLD PRICE IN USD', 'BITCOIN PRICE IN USD',
+                                   'ETHEREUM PRICE IN USD'])
 
-asset = st.selectbox('Sélectionnez un asset', options=['S&P 500 PRICE IN USD', 'Autre Asset 1', 'Autre Asset 2'])
+# Start and end date selection
+start_date = st.date_input('Start date', value=datetime(2019, 1, 1))
+end_date = st.date_input('End date', value=datetime(2020, 1, 1))
 
-# Sélection des dates de début et de fin
-startDate = st.date_input('Date de début', value=datetime(2022, 1, 1))
-endDate = st.date_input('Date de fin', value=datetime(2023, 1, 1))
-
-# Bouton pour générer le graphique
-if st.button('Afficher le graphique'):
+# Button to generate the plot
+if st.button('Show plot'):
     try:
-        # Appel de la fonction backend pour générer le graphique
-        buf = plotAssetPrice(asset, startDate, endDate)
+        # Call the backend function to generate the plot
+        buf = generate_asset_price_graph(asset_name, start_date, end_date)
 
-        # Affichage du graphique
+        # Display the plot
         st.image(buf, use_column_width=True)
 
     except ValueError as e:
