@@ -59,50 +59,38 @@ print(", ".join(data.columns))
 
 
 import matplotlib.pyplot as plt
+import io
 
-# Load the data specifying the column separator
-data = pd.read_csv('DataCapstone.csv', delimiter=';', decimal=' ')
+def plotAssetPrice(asset, startDate, endDate):
+    # Chargement des données
+    data = pd.read_csv('DataCapstone.csv', delimiter=';', decimal=' ')
 
-# Strip any extra spaces from the column names
-data.columns = data.columns.str.strip()
+    # Conversion de la colonne 'Date' en format datetime
+    data['Date'] = pd.to_datetime(data['Date'])
 
-# Convert the data in the columns to float after replacing commas with periods and removing spaces
-data['S&P 500 PRICE IN USD'] = data['S&P 500 PRICE IN USD'].str.replace(' ', '').str.replace(',', '.').astype(float)
-data['GOLD PRICE IN USD'] = data['GOLD PRICE IN USD'].str.replace(' ', '').str.replace(',', '.').astype(float)
-data['BITCOIN PRICE IN USD'] = data['BITCOIN PRICE IN USD'].str.replace(' ', '').str.replace(',', '.').astype(float)
-data['ETHEREUM PRICE IN USD'] = data['ETHEREUM PRICE IN USD'].str.replace(' ', '').str.replace(',', '.').astype(float)
+    # Filtrage des données par date
+    mask = (data['Date'] >= start_date) & (data['Date'] <= endDate)
+    filtered_data = data.loc[mask]
 
-# Convert the 'Date' column to datetime type
-data['Date'] = pd.to_datetime(data['Date'], format='%d/%m/%Y')
+    # Vérification si l'asset existe dans les colonnes
+    if asset not in filtered_data.columns:
+        raise ValueError(f"L'asset {asset} n'existe pas dans les données.")
 
-# Create subplots with a 2x2 layout
-fig, axs = plt.subplots(2, 2, figsize=(15, 10), sharex=True)
+    # Création du graphique
+    plt.figure(figsize=(10, 5))
+    plt.plot(filtered_data['Date'], filtered_data[asset], label=asset)
+    plt.xlabel('Date')
+    plt.ylabel('Prix')
+    plt.title(f'Prix de {asset} de {startDate} à {endDate}')
+    plt.legend()
+    plt.grid(True)
 
-# Plot each graph in its respective subplot
-axs[0, 0].plot(data['Date'], data['S&P 500 PRICE IN USD'], color='black')
-axs[0, 0].set_title('S&P 500 Price Evolution')
-axs[0, 0].set_ylabel('S&P 500 Price in USD')
+    # Sauvegarde du graphique dans un buffer
+    buf = io.BytesIO()
+    plt.savefig(buf, format='png')
+    buf.seek(0)
 
-axs[0, 1].plot(data['Date'], data['GOLD PRICE IN USD'], color='gold')
-axs[0, 1].set_title('Gold Price Evolution')
-axs[0, 1].set_ylabel('Gold Price in USD')
-
-axs[1, 0].plot(data['Date'], data['BITCOIN PRICE IN USD'], color='green')
-axs[1, 0].set_title('Bitcoin Price Evolution')
-axs[1, 0].set_ylabel('Bitcoin Price in USD')
-
-axs[1, 1].plot(data['Date'], data['ETHEREUM PRICE IN USD'], color='lightgreen')
-axs[1, 1].set_title('Ethereum Price Evolution')
-axs[1, 1].set_ylabel('Ethereum Price in USD')
-
-# Set a common x-axis label
-fig.text(0.5, 0.04, 'Date', ha='center')
-
-# Improve layout
-plt.tight_layout()
-
-# Show the plot
-plt.show()
+    return buf
 
 
 # In[5]:

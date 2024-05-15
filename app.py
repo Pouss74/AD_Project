@@ -1,18 +1,28 @@
+from datetime import datetime
+
 import streamlit as st
 
 ## ICI il y aura la Web app qui appelle les différentes fonctions et trucs à afficher de backend.py
 # Supposons que votre script converti s'appelle notebook_script.py
-#import backend
+from backend import plotAssetPrice
 
 # Titre de l'application
 st.title('Application Web utilisant Streamlit et un Notebook Jupyter')
 
-# Vous pouvez maintenant appeler les fonctions du script converti
-#result = backend.ma_fonction()
+asset = st.selectbox('Sélectionnez un asset', options=['S&P 500 PRICE IN USD', 'Autre Asset 1', 'Autre Asset 2'])
 
-# Afficher le résultat dans Streamlit
-#st.write(result)
+# Sélection des dates de début et de fin
+startDate = st.date_input('Date de début', value=datetime(2022, 1, 1))
+endDate = st.date_input('Date de fin', value=datetime(2023, 1, 1))
 
-# Vous pouvez également afficher d'autres types de contenu comme des graphiques
-#if hasattr(notebook_script, 'mon_graphe'):
-#    st.pyplot(notebook_script.mon_graphe())
+# Bouton pour générer le graphique
+if st.button('Afficher le graphique'):
+    try:
+        # Appel de la fonction backend pour générer le graphique
+        buf = plotAssetPrice(asset, startDate, endDate)
+
+        # Affichage du graphique
+        st.image(buf, use_column_width=True)
+
+    except ValueError as e:
+        st.error(e)
