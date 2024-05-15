@@ -2,7 +2,7 @@ import streamlit as st
 
 ## ICI il y aura la Web app qui appelle les différentes fonctions et trucs à afficher de backend.py
 # Supposons que votre script converti s'appelle notebook_script.py
-import backend
+#import backend
 
 # Titre de l'application
 st.title('Application Web utilisant Streamlit et un Notebook Jupyter')
