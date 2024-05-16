@@ -33,6 +33,9 @@ def generate_asset_price_graph(asset_name, start_date, end_date):
     # Limit the number of ticks on the y-axis
     plt.gca().yaxis.set_major_locator(MaxNLocator(nbins=10))  # Limit to 10 ticks
 
+    # Adjust layout to ensure labels are not cut off
+    plt.tight_layout()
+
     # Save the plot to a buffer
     buf = io.BytesIO()
     plt.savefig(buf, format='png')
@@ -73,6 +76,9 @@ def generate_normalized_graph(start_date, end_date):
     # Limit the number of ticks on the y-axis
     plt.gca().yaxis.set_major_locator(MaxNLocator(nbins=10))  # Limit to 10 ticks
 
+    # Adjust layout to ensure labels are not cut off
+    plt.tight_layout()
+
     # Save the plot to a buffer
     buf = io.BytesIO()
     plt.savefig(buf, format='png')
@@ -88,13 +94,16 @@ def generate_correlation_matrix():
     # Convert the 'Date' column to datetime format
     data['Date'] = pd.to_datetime(data['Date'], format='%d/%m/%Y', dayfirst=True)  # Ensure the date format is correct
 
-    # Calculate the correlation matrix
-    correlation_matrix = data.corr()
+    # Calculate the correlation matrix excluding the Date column
+    correlation_matrix = data.drop(columns=['Date']).corr()
 
     # Plot the correlation matrix with color coding
     plt.figure(figsize=(10, 8))
     heatmap = sns.heatmap(correlation_matrix, annot=True, fmt=".2f", cmap='coolwarm', cbar=True)
     plt.title('Correlation Matrix with Color Coding')
+
+    # Adjust layout to ensure labels are not cut off
+    plt.tight_layout()
 
     # Save the plot to a buffer
     buf = io.BytesIO()
