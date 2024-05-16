@@ -1,8 +1,11 @@
 import streamlit as st
 from datetime import datetime
 
-# Import the generate_asset_price_graph function from the backend
-from backend import generate_asset_price_graph
+# Debugging imports
+try:
+    from backend import generate_asset_price_graph
+except ImportError as e:
+    st.error(f"ImportError: {e}")
 
 # Application title
 st.title('Asset Price Visualization Application')
@@ -27,3 +30,5 @@ if st.button('Show plot'):
 
     except ValueError as e:
         st.error(e)
+    except Exception as e:
+        st.error(f"An unexpected error occurred: {e}")
