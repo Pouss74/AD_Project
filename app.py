@@ -2,7 +2,7 @@ import streamlit as st
 from datetime import datetime
 
 # Import the backend functions
-from backend import generate_asset_price_graph, generate_normalized_graph
+from backend import generate_asset_price_graph, generate_normalized_graph, generate_correlation_matrix
 
 # Application title
 st.title('Asset Price Visualization Application')
@@ -35,6 +35,18 @@ if st.button('Show normalized assets plot'):
         buf = generate_normalized_graph(start_date, end_date)
 
         # Display the normalized assets plot
+        st.image(buf, use_column_width=True)
+
+    except ValueError as e:
+        st.error(e)
+
+# Button to generate the correlation matrix plot
+if st.button('Show correlation matrix'):
+    try:
+        # Call the backend function to generate the correlation matrix plot
+        buf = generate_correlation_matrix()
+
+        # Display the correlation matrix plot
         st.image(buf, use_column_width=True)
 
     except ValueError as e:
