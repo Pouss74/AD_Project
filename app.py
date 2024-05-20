@@ -141,7 +141,22 @@ with tab4:
 # Linear Regression tab
 with tab5:
     st.header("Linear Regression")
-    st.write("Content for Linear Regression tab")
+    
+    # Buttons for Linear Regression and Log-Linear Regression
+    if st.button("Linear Regression"):
+        regression_type = "linear"
+    elif st.button("Log-Linear Regression"):
+        regression_type = "log-linear"
+    else:
+        regression_type = None
+    
+    # Asset selection
+    asset_name = st.selectbox("Select an asset for regression", ["S&P 500 PRICE IN USD", "GOLD PRICE IN USD", "BITCOIN PRICE IN USD", "ETHEREUM PRICE IN USD"], key="regression_asset")
+    
+    # Placeholder content based on the selected regression type
+    if regression_type:
+        st.write(f"You have selected {regression_type.replace('-', ' ').title()} for {asset_name}.")
+        # Add logic to display the regression analysis results based on `regression_type` and `asset_name`
 
 # ARIMA tab
 with tab6:
