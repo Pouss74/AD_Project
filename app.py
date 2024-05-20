@@ -2,26 +2,35 @@ import streamlit as st
 import pandas as pd
 from backend import generate_asset_price_graph, generate_normalized_graph, generate_correlation_matrix
 
-# Apply custom CSS for a black background with Bitcoin, Ethereum, and blockchain graphics
+# Apply custom CSS for the desired styling
 st.markdown(
     """
     <style>
     .stApp {
         background-color: #000000; /* Black background color */
         color: #ffffff; /* White text color for contrast */
-        background-image: url('https://example.com/bitcoin_graphic.png'), url('https://example.com/ethereum_graphic.png'), url('https://example.com/blockchain_graphic.png');
-        background-position: left top, right top, center bottom; /* Position the graphics */
-        background-repeat: no-repeat, no-repeat, no-repeat; /* Do not repeat the graphics */
-        background-size: 100px, 100px, 100px; /* Size of the graphics */
     }
     .css-18e3th9 {
         background-color: #000000; /* Background color for main container */
+        color: #ffffff; /* Ensure text is white */
     }
     .css-1d391kg { 
         background-color: #1a1a1a; /* Slightly lighter black for the sidebar */
+        color: #ffffff; /* Ensure text is white */
     }
     .css-1d391kg header, .css-1d391kg footer {
         background-color: #000000; /* Match header and footer background to app */
+    }
+    h1 {
+        font-size: 3em; /* Larger font size for the title */
+        text-align: center; /* Center align the title */
+        font-style: italic; /* Italicize the title */
+    }
+    .stTabs [data-baseweb="tab-list"] {
+        justify-content: center; /* Center the tabs */
+    }
+    .stTabs [data-baseweb="tab"] {
+        color: #ffffff !important; /* Ensure tab text is white */
     }
     </style>
     """,
@@ -47,7 +56,7 @@ def get_forecast_image_path(asset, model):
 
 
 # App title
-st.title("Future is Yours")
+st.title("Future is Yours!")
 
 # Create tabs
 tab1, tab2 = st.tabs(["Historical Data", "Forecasts"])
