@@ -43,7 +43,7 @@ def get_forecast_image_path(asset, model):
 
 
 # App title
-st.title("Future is Yours!")
+st.title("Future is Yours")
 
 # Create tabs
 tab1, tab2 = st.tabs(["Historical Data", "Forecasts"])
