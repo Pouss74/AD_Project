@@ -85,7 +85,6 @@ def get_forecast_image_path(asset, model):
     }
     return forecast_images[asset][model]
 
-
 # App title
 st.title("Future is Yours!")
 
@@ -164,9 +163,9 @@ with tab6:
     # Asset selection
     asset_name = st.selectbox("Select an asset for ARIMA model", ["Bitcoin", "Ethereum"], key="arima_asset")
     
-    # Placeholder content for ARIMA model
-    st.write(f"ARIMA model for {asset_name}.")
-    # Add logic to display ARIMA model results based on `asset_name`
+    # Automatically display the ARIMA forecast based on the selected asset
+    arima_image_path = get_forecast_image_path(asset_name, "ARIMA")
+    st.image(arima_image_path, use_column_width=True)
 
 # LSTM 1 tab
 with tab7:
@@ -175,9 +174,9 @@ with tab7:
     # Asset selection
     asset_name = st.selectbox("Select an asset for LSTM 1 model", ["Bitcoin", "Ethereum"], key="lstm1_asset")
     
-    # Placeholder content for LSTM 1 model
-    st.write(f"LSTM 1 model for {asset_name}.")
-    # Add logic to display LSTM 1 model results based on `asset_name`
+    # Automatically display the LSTM 1 forecast based on the selected asset
+    lstm1_image_path = get_forecast_image_path(asset_name, "LSTM")
+    st.image(lstm1_image_path, use_column_width=True)
 
 # LSTM 2 tab
 with tab8:
@@ -186,6 +185,6 @@ with tab8:
     # Asset selection
     asset_name = st.selectbox("Select an asset for LSTM 2 model", ["Bitcoin", "Ethereum"], key="lstm2_asset")
     
-    # Placeholder content for LSTM 2 model
-    st.write(f"LSTM 2 model for {asset_name}.")
-    # Add logic to display LSTM 2 model results based on `asset_name`
+    # Automatically display the LSTM 2 forecast based on the selected asset
+    lstm2_image_path = get_forecast_image_path(asset_name, "LSTM with correlation")
+    st.image(lstm2_image_path, use_column_width=True)
