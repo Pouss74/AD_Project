@@ -124,6 +124,9 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+# Add some space before the tabs
+st.markdown("<br><br>", unsafe_allow_html=True)
+
 # Create tabs
 tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs(
     ["Historical Data", "Re-Scale Graphic", "Returns", "Correlation", "Regression", "ARIMA", "LSTM 1", "LSTM 2"])
