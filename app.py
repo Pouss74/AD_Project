@@ -10,11 +10,14 @@ st.markdown(
         background-color: #f0f0f0; /* Light gray matte background color */
         color: #333333; /* Darker text color for contrast */
     }
-    .stApp header, .stApp footer {
-        background-color: #f0f0f0; /* Match header and footer background to app */
+    .css-18e3th9 {
+        background-color: #f0f0f0; /* Background color for main container */
     }
-    .stApp [data-testid="stSidebar"] {
+    .css-1d391kg { 
         background-color: #e0e0e0; /* Slightly darker for the sidebar */
+    }
+    .css-1d391kg header, .css-1d391kg footer {
+        background-color: #f0f0f0; /* Match header and footer background to app */
     }
     </style>
     """,
