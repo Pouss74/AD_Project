@@ -63,6 +63,9 @@ st.markdown(
         margin-top: 20px;
         line-height: 1.6;
     }
+    .regression-text, .css-1q8dd3e, .css-1d391kg, .css-18e3th9, .stSelectbox label, .stRadio label {
+        color: #ffffff !important; /* White text for regression tab */
+    }
     </style>
     """,
     unsafe_allow_html=True
