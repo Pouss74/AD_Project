@@ -2,6 +2,24 @@ import streamlit as st
 import pandas as pd
 from backend import generate_asset_price_graph, generate_normalized_graph, generate_correlation_matrix
 
+# Apply custom CSS for a matte background
+st.markdown(
+    """
+    <style>
+    .stApp {
+        background-color: #f0f0f0; /* Light gray matte background color */
+        color: #333333; /* Darker text color for contrast */
+    }
+    .stApp header, .stApp footer {
+        background-color: #f0f0f0; /* Match header and footer background to app */
+    }
+    .stApp [data-testid="stSidebar"] {
+        background-color: #e0e0e0; /* Slightly darker for the sidebar */
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
 # Function to get forecast image path based on selection
 def get_forecast_image_path(asset, model):
