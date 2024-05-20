@@ -63,6 +63,21 @@ st.markdown(
         margin-top: 20px;
         line-height: 1.6;
     }
+    .disclaimer {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        font-size: 0.8em;
+        color: #ffffff;
+        background-color: #000000;
+        padding: 10px;
+        margin: 10px;
+        border-radius: 5px;
+    }
+    .metrics {
+        margin-top: 20px;
+        line-height: 1.6;
+    }
     </style>
     """,
     unsafe_allow_html=True
@@ -166,6 +181,15 @@ with tab6:
     # Automatically display the ARIMA forecast based on the selected asset
     arima_image_path = get_forecast_image_path(asset_name, "ARIMA")
     st.image(arima_image_path, use_column_width=True)
+    
+    st.markdown(
+        """
+        <div class="disclaimer">
+        Disclaimer: These charts are for research purposes only and do not constitute investment advice. Investing involves risks.
+        </div>
+        """, 
+        unsafe_allow_html=True
+    )
 
 # LSTM 1 tab
 with tab7:
@@ -177,6 +201,34 @@ with tab7:
     # Automatically display the LSTM 1 forecast based on the selected asset
     lstm1_image_path = get_forecast_image_path(asset_name, "LSTM")
     st.image(lstm1_image_path, use_column_width=True)
+    
+    if asset_name == "Bitcoin":
+        st.write("""
+        <div class="metrics">
+        Bitcoin Prediction Metrics:<br>
+        Mean Absolute Error: 1502.8202759051017<br>
+        Mean Absolute Percentage Error: 3.5216085420893433%<br>
+        R-squared Score: 0.968159835080644
+        </div>
+        """, unsafe_allow_html=True)
+    elif asset_name == "Ethereum":
+        st.write("""
+        <div class="metrics">
+        Ethereum Prediction Metrics:<br>
+        Mean Absolute Error: 104.6619032567737<br>
+        Mean Absolute Percentage Error: 4.634681268119115%<br>
+        R-squared Score: 0.9399836079679001
+        </div>
+        """, unsafe_allow_html=True)
+    
+    st.markdown(
+        """
+        <div class="disclaimer">
+        Disclaimer: These charts are for research purposes only and do not constitute investment advice. Investing involves risks.
+        </div>
+        """, 
+        unsafe_allow_html=True
+    )
 
 # LSTM 2 tab
 with tab8:
@@ -188,3 +240,31 @@ with tab8:
     # Automatically display the LSTM 2 forecast based on the selected asset
     lstm2_image_path = get_forecast_image_path(asset_name, "LSTM with correlation")
     st.image(lstm2_image_path, use_column_width=True)
+    
+    if asset_name == "Bitcoin":
+        st.write("""
+        <div class="metrics">
+        Bitcoin Prediction Metrics:<br>
+        Mean Absolute Error: 3111.369628773971<br>
+        Mean Absolute Percentage Error: 6.991318338500592%<br>
+        R-squared Score: 0.884409707322686
+        </div>
+        """, unsafe_allow_html=True)
+    elif asset_name == "Ethereum":
+        st.write("""
+        <div class="metrics">
+        Ethereum Prediction Metrics:<br>
+        Mean Absolute Error: 143.032266023599<br>
+        Mean Absolute Percentage Error: 6.550255220961676%<br>
+        R-squared Score: 0.9114275560790139
+        </div>
+        """, unsafe_allow_html=True)
+    
+    st.markdown(
+        """
+        <div class="disclaimer">
+        Disclaimer: These charts are for research purposes only and do not constitute investment advice. Investing involves risks.
+        </div>
+        """, 
+        unsafe_allow_html=True
+    )
