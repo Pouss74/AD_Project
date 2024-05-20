@@ -87,7 +87,7 @@ st.title("Future is Yours!")
 
 # Create tabs
 tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs(
-    ["Historical Data", "Returns", "Correlation", "Re-Scale Graphic", "Linear Regression", "ARIMA", "LSTM 1", "LSTM 2"])
+    ["Historical Data", "Re-Scale Graphic", "Returns", "Correlation", "Linear Regression", "ARIMA", "LSTM 1", "LSTM 2"])
 
 # Historical Data tab
 with tab1:
@@ -103,13 +103,27 @@ with tab1:
         buf = generate_asset_price_graph(asset_name, start_date, end_date)
         st.image(buf, use_column_width=True)
 
-# Returns tab
+# Re-Scale Graphic tab
 with tab2:
+    st.header("Re-Scale Graphic")
+
+    # Input for asset price graph
+    asset_name = st.selectbox("Select an asset to re-scale", ["S&P 500 PRICE IN USD", "GOLD PRICE IN USD", "BITCOIN PRICE IN USD",
+                                                  "ETHEREUM PRICE IN USD"], key="rescale_asset")
+    start_date = st.date_input("Start date", value=pd.to_datetime("2019-01-01"), key="rescale_start_date")
+    end_date = st.date_input("End date", value=pd.to_datetime("2019-12-31"), key="rescale_end_date")
+    
+    if st.button("Show Normalized Prices"):
+        buf = generate_normalized_graph(start_date, end_date)
+        st.image(buf, use_column_width=True)
+
+# Returns tab
+with tab3:
     st.header("Returns")
     st.write("Content for Returns tab")
 
 # Correlation tab
-with tab3:
+with tab4:
     st.header("Correlation")
     
     # Automatically display the correlation matrix
@@ -123,20 +137,6 @@ with tab3:
     Correlation between GOLD PRICE IN USD and ETHEREUM PRICE IN USD is moderate (0.595), and is significant (p-value: 0.0000).
     Correlation between BITCOIN PRICE IN USD and ETHEREUM PRICE IN USD is very strong (0.923), and is significant (p-value: 0.0000).
     """)
-
-# Re-Scale Graphic tab
-with tab4:
-    st.header("Re-Scale Graphic")
-
-    # Input for asset price graph
-    asset_name = st.selectbox("Select an asset to re-scale", ["S&P 500 PRICE IN USD", "GOLD PRICE IN USD", "BITCOIN PRICE IN USD",
-                                                  "ETHEREUM PRICE IN USD"], key="rescale_asset")
-    start_date = st.date_input("Start date", value=pd.to_datetime("2019-01-01"), key="rescale_start_date")
-    end_date = st.date_input("End date", value=pd.to_datetime("2019-12-31"), key="rescale_end_date")
-    
-    if st.button("Show Normalized Prices"):
-        buf = generate_normalized_graph(start_date, end_date)
-        st.image(buf, use_column_width=True)
 
 # Linear Regression tab
 with tab5:
