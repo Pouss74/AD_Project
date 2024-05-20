@@ -56,15 +56,12 @@ st.markdown(
         width: 50%;
         margin: 0 auto;
     }
-    .css-1q8dd3e, .css-1d391kg, .css-18e3th9, .stSelectbox label, .stDateInput label {
+    .css-1q8dd3e, .css-1d391kg, .css-18e3th9, .stSelectbox label, .stDateInput label, .stRadio label, .stRadio span {
         color: #ffffff !important; /* White text for labels */
     }
     .correlation-text {
         margin-top: 20px;
         line-height: 1.6;
-    }
-    .regression-text, .css-1q8dd3e, .css-1d391kg, .css-18e3th9, .stSelectbox label, .stRadio label {
-        color: #ffffff !important; /* White text for regression tab */
     }
     </style>
     """,
