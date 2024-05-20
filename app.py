@@ -59,6 +59,10 @@ st.markdown(
     .css-1q8dd3e, .css-1d391kg, .css-18e3th9, .stSelectbox label, .stDateInput label {
         color: #ffffff !important; /* White text for labels */
     }
+    .correlation-text {
+        margin-top: 20px;
+        line-height: 1.6;
+    }
     </style>
     """,
     unsafe_allow_html=True
@@ -106,16 +110,10 @@ with tab1:
 # Re-Scale Graphic tab
 with tab2:
     st.header("Re-Scale Graphic")
-
-    # Input for asset price graph
-    asset_name = st.selectbox("Select an asset to re-scale", ["S&P 500 PRICE IN USD", "GOLD PRICE IN USD", "BITCOIN PRICE IN USD",
-                                                  "ETHEREUM PRICE IN USD"], key="rescale_asset")
-    start_date = st.date_input("Start date", value=pd.to_datetime("2019-01-01"), key="rescale_start_date")
-    end_date = st.date_input("End date", value=pd.to_datetime("2019-12-31"), key="rescale_end_date")
     
-    if st.button("Show Normalized Prices"):
-        buf = generate_normalized_graph(start_date, end_date)
-        st.image(buf, use_column_width=True)
+    # Automatically display the normalized graph
+    buf = generate_normalized_graph(pd.to_datetime("2019-01-01"), pd.to_datetime("2019-12-31"))
+    st.image(buf, use_column_width=True)
 
 # Returns tab
 with tab3:
@@ -131,12 +129,14 @@ with tab4:
     st.image(buf, use_column_width=True)
     
     st.write("""
-    Correlation between S&P 500 PRICE IN USD and BITCOIN PRICE IN USD is very strong (0.861), and is significant (p-value: 0.0000).
-    Correlation between S&P 500 PRICE IN USD and ETHEREUM PRICE IN USD is very strong (0.889), and is significant (p-value: 0.0000).
-    Correlation between GOLD PRICE IN USD and BITCOIN PRICE IN USD is strong (0.622), and is significant (p-value: 0.0000).
-    Correlation between GOLD PRICE IN USD and ETHEREUM PRICE IN USD is moderate (0.595), and is significant (p-value: 0.0000).
+    <div class="correlation-text">
+    Correlation between S&P 500 PRICE IN USD and BITCOIN PRICE IN USD is very strong (0.861), and is significant (p-value: 0.0000).<br>
+    Correlation between S&P 500 PRICE IN USD and ETHEREUM PRICE IN USD is very strong (0.889), and is significant (p-value: 0.0000).<br>
+    Correlation between GOLD PRICE IN USD and BITCOIN PRICE IN USD is strong (0.622), and is significant (p-value: 0.0000).<br>
+    Correlation between GOLD PRICE IN USD and ETHEREUM PRICE IN USD is moderate (0.595), and is significant (p-value: 0.0000).<br>
     Correlation between BITCOIN PRICE IN USD and ETHEREUM PRICE IN USD is very strong (0.923), and is significant (p-value: 0.0000).
-    """)
+    </div>
+    """, unsafe_allow_html=True)
 
 # Linear Regression tab
 with tab5:
