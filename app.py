@@ -101,6 +101,14 @@ def get_forecast_image_path(asset, model):
     return forecast_images[asset][model]
 
 # App title
+st.markdown(
+    """
+    <div class="disclaimer">
+    Disclaimer: These charts are for research purposes only and do not constitute investment advice. Investing involves risks.
+    </div>
+    """, 
+    unsafe_allow_html=True
+)
 st.title("Future is Yours!")
 
 # Create tabs
