@@ -86,7 +86,7 @@ def get_forecast_image_path(asset, model):
 st.title("Future is Yours!")
 
 # Create tabs
-tab1, tab2, tab3 = st.tabs(["Historical Data", "Forecasts", "Correlation"])
+tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs(["Historical Data", "Returns", "Correlation", "Linear Regression", "ARIMA", "LSTM 1", "LSTM 2"])
 
 # Historical Data tab
 with tab1:
@@ -98,35 +98,51 @@ with tab1:
     start_date = st.date_input("Start date", value=pd.to_datetime("2019-01-01"), key="start_date")
     end_date = st.date_input("End date", value=pd.to_datetime("2019-12-31"), key="end_date")
     
-    # Centering the buttons
-    with st.container():
-        col1, col2 = st.columns([1,1])
-        with col1:
-            if st.button("Show Asset Price"):
-                buf = generate_asset_price_graph(asset_name, start_date, end_date)
-                st.image(buf, use_column_width=True)
-        with col2:
-            if st.button("Show Normalized Prices"):
-                buf = generate_normalized_graph(start_date, end_date)
-                st.image(buf, use_column_width=True)
+    if st.button("Show Asset Price"):
+        buf = generate_asset_price_graph(asset_name, start_date, end_date)
+        st.image(buf, use_column_width=True)
+    
+    if st.button("Show Normalized Prices"):
+        buf = generate_normalized_graph(start_date, end_date)
+        st.image(buf, use_column_width=True)
 
-# Forecasts tab
+# Returns tab
 with tab2:
-    st.header("Forecasts")
-
-    # Dropdowns to select asset and model
-    forecast_asset = st.selectbox("Select an asset for forecast", ["Bitcoin", "Ethereum"])
-    forecast_model = st.selectbox("Select a model", ["ARIMA", "LSTM", "LSTM with correlation"])
-
-    # Button to display forecast
-    if st.button("Show Forecast"):
-        image_path = get_forecast_image_path(forecast_asset, forecast_model)
-        st.image(image_path, caption=f"{forecast_asset} forecast using {forecast_model}", use_column_width=True)
+    st.header("Returns")
+    st.write("Content for Returns tab")
 
 # Correlation tab
 with tab3:
     st.header("Correlation")
     
-    if st.button("Show Correlation Matrix"):
-        buf = generate_correlation_matrix()
-        st.image(buf, use_column_width=True)
+    # Automatically display the correlation matrix
+    buf = generate_correlation_matrix()
+    st.image(buf, use_column_width=True)
+    
+    st.write("""
+    Correlation between S&P 500 PRICE IN USD and BITCOIN PRICE IN USD is very strong (0.861), and is significant (p-value: 0.0000).
+    Correlation between S&P 500 PRICE IN USD and ETHEREUM PRICE IN USD is very strong (0.889), and is significant (p-value: 0.0000).
+    Correlation between GOLD PRICE IN USD and BITCOIN PRICE IN USD is strong (0.622), and is significant (p-value: 0.0000).
+    Correlation between GOLD PRICE IN USD and ETHEREUM PRICE IN USD is moderate (0.595), and is significant (p-value: 0.0000).
+    Correlation between BITCOIN PRICE IN USD and ETHEREUM PRICE IN USD is very strong (0.923), and is significant (p-value: 0.0000).
+    """)
+
+# Linear Regression tab
+with tab4:
+    st.header("Linear Regression")
+    st.write("Content for Linear Regression tab")
+
+# ARIMA tab
+with tab5:
+    st.header("ARIMA")
+    st.write("Content for ARIMA tab")
+
+# LSTM 1 tab
+with tab6:
+    st.header("LSTM 1")
+    st.write("Content for LSTM 1 tab")
+
+# LSTM 2 tab
+with tab7:
+    st.header("LSTM 2")
+    st.write("Content for LSTM 2 tab")
