@@ -64,15 +64,10 @@ st.markdown(
         line-height: 1.6;
     }
     .disclaimer {
-        position: absolute;
-        bottom: 0;
-        right: 0;
         font-size: 0.8em;
         color: #ffffff;
-        background-color: #000000;
-        padding: 10px;
-        margin: 10px;
-        border-radius: 5px;
+        text-align: center;
+        margin-bottom: 20px;
     }
     .metrics {
         margin-top: 20px;
@@ -189,15 +184,6 @@ with tab6:
     # Automatically display the ARIMA forecast based on the selected asset
     arima_image_path = get_forecast_image_path(asset_name, "ARIMA")
     st.image(arima_image_path, use_column_width=True)
-    
-    st.markdown(
-        """
-        <div class="disclaimer">
-        Disclaimer: These charts are for research purposes only and do not constitute investment advice. Investing involves risks.
-        </div>
-        """, 
-        unsafe_allow_html=True
-    )
 
 # LSTM 1 tab
 with tab7:
@@ -228,15 +214,6 @@ with tab7:
         R-squared Score: 0.9399836079679001
         </div>
         """, unsafe_allow_html=True)
-    
-    st.markdown(
-        """
-        <div class="disclaimer">
-        Disclaimer: These charts are for research purposes only and do not constitute investment advice. Investing involves risks.
-        </div>
-        """, 
-        unsafe_allow_html=True
-    )
 
 # LSTM 2 tab
 with tab8:
@@ -267,12 +244,3 @@ with tab8:
         R-squared Score: 0.9114275560790139
         </div>
         """, unsafe_allow_html=True)
-    
-    st.markdown(
-        """
-        <div class="disclaimer">
-        Disclaimer: These charts are for research purposes only and do not constitute investment advice. Investing involves risks.
-        </div>
-        """, 
-        unsafe_allow_html=True
-    )
