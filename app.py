@@ -110,9 +110,13 @@ with tab1:
 # Re-Scale Graphic tab
 with tab2:
     st.header("Re-Scale Graphic")
+
+    # Input for date range
+    start_date = st.date_input("Start date", value=pd.to_datetime("2019-01-01"), key="rescale_start_date")
+    end_date = st.date_input("End date", value=pd.to_datetime("2019-12-31"), key="rescale_end_date")
     
-    # Automatically display the normalized graph
-    buf = generate_normalized_graph(pd.to_datetime("2019-01-01"), pd.to_datetime("2019-12-31"))
+    # Automatically display the normalized graph based on the selected date range
+    buf = generate_normalized_graph(start_date, end_date)
     st.image(buf, use_column_width=True)
 
 # Returns tab
@@ -161,14 +165,32 @@ with tab5:
 # ARIMA tab
 with tab6:
     st.header("ARIMA")
-    st.write("Content for ARIMA tab")
+    
+    # Asset selection
+    asset_name = st.selectbox("Select an asset for ARIMA model", ["Bitcoin", "Ethereum"], key="arima_asset")
+    
+    # Placeholder content for ARIMA model
+    st.write(f"ARIMA model for {asset_name}.")
+    # Add logic to display ARIMA model results based on `asset_name`
 
 # LSTM 1 tab
 with tab7:
     st.header("LSTM 1")
-    st.write("Content for LSTM 1 tab")
+    
+    # Asset selection
+    asset_name = st.selectbox("Select an asset for LSTM 1 model", ["Bitcoin", "Ethereum"], key="lstm1_asset")
+    
+    # Placeholder content for LSTM 1 model
+    st.write(f"LSTM 1 model for {asset_name}.")
+    # Add logic to display LSTM 1 model results based on `asset_name`
 
 # LSTM 2 tab
 with tab8:
     st.header("LSTM 2")
-    st.write("Content for LSTM 2 tab")
+    
+    # Asset selection
+    asset_name = st.selectbox("Select an asset for LSTM 2 model", ["Bitcoin", "Ethereum"], key="lstm2_asset")
+    
+    # Placeholder content for LSTM 2 model
+    st.write(f"LSTM 2 model for {asset_name}.")
+    # Add logic to display LSTM 2 model results based on `asset_name`
