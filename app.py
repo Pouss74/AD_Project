@@ -2,22 +2,26 @@ import streamlit as st
 import pandas as pd
 from backend import generate_asset_price_graph, generate_normalized_graph, generate_correlation_matrix
 
-# Apply custom CSS for a matte background
+# Apply custom CSS for a black background with Bitcoin, Ethereum, and blockchain graphics
 st.markdown(
     """
     <style>
     .stApp {
-        background-color: #f0f0f0; /* Light gray matte background color */
-        color: #333333; /* Darker text color for contrast */
+        background-color: #000000; /* Black background color */
+        color: #ffffff; /* White text color for contrast */
+        background-image: url('https://example.com/bitcoin_graphic.png'), url('https://example.com/ethereum_graphic.png'), url('https://example.com/blockchain_graphic.png');
+        background-position: left top, right top, center bottom; /* Position the graphics */
+        background-repeat: no-repeat, no-repeat, no-repeat; /* Do not repeat the graphics */
+        background-size: 100px, 100px, 100px; /* Size of the graphics */
     }
     .css-18e3th9 {
-        background-color: #f0f0f0; /* Background color for main container */
+        background-color: #000000; /* Background color for main container */
     }
     .css-1d391kg { 
-        background-color: #e0e0e0; /* Slightly darker for the sidebar */
+        background-color: #1a1a1a; /* Slightly lighter black for the sidebar */
     }
     .css-1d391kg header, .css-1d391kg footer {
-        background-color: #f0f0f0; /* Match header and footer background to app */
+        background-color: #000000; /* Match header and footer background to app */
     }
     </style>
     """,
