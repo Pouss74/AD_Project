@@ -1,3 +1,9 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[1]:
+
+
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -17,7 +23,10 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 from sklearn.preprocessing import MinMaxScaler
 
 
-# 1. Reading the CSV file with semicolon as the delimiter
+# In[3]:
+
+
+# Reading the CSV file with semicolon as the delimiter
 data = pd.read_csv('DataCapstone.csv', delimiter=';')
 
 # Display the first five and the last five rows with centered text styling
@@ -36,8 +45,12 @@ display(pd.concat([first_five, last_five]).style.set_table_styles([
 ]))
 
 
+# ## CHECK MISSING DATA
 
-# 2. Checking for missing data in the DataFrame
+# In[2]:
+
+
+# Checking for missing data in the DataFrame
 missing_data = data.isnull().sum()
 
 # Displaying the number of missing entries in each column
@@ -55,15 +68,21 @@ total_missing = missing_data.sum()
 print("Total missing values in the dataset: ", total_missing)
 
 
+# In[3]:
 
-# 3. Print the column names to understand the structure
+
+# Print the column names to understand the structure
 print("Column names in the dataset:")
 # Join column names with a comma and space for better readability on one line
 print(", ".join(data.columns))
 
 
+# ## VISUALIZATION OF HISTORICAL PRICES
 
-# 4. Load the data specifying the column separator
+# In[4]:
+
+
+# Load the data specifying the column separator
 data = pd.read_csv('DataCapstone.csv', delimiter=';', decimal=' ')
 
 # Strip any extra spaces from the column names
@@ -108,8 +127,10 @@ plt.tight_layout()
 plt.show()
 
 
+# In[5]:
 
-# 5. Load the data specifying the column separator
+
+# Load the data specifying the column separator
 data = pd.read_csv('DataCapstone.csv', delimiter=';', decimal=' ')
 
 # Strip any extra spaces from the column names
@@ -148,9 +169,10 @@ plt.legend()
 plt.show()
 
 
+# In[5]:
 
 
-# 6. Load the data specifying the column separator
+# Load the data specifying the column separator
 data = pd.read_csv('DataCapstone.csv', delimiter=';', decimal=' ')
 
 # Strip any extra spaces from the column names
@@ -193,8 +215,12 @@ plt.tight_layout()
 plt.show()
 
 
+# ## RE-SCALE BITCOIN PRICE TO VIEW ALL 4 ASSETS ON A SINGLE CHART
 
-# 7. Load the data specifying the column separator
+# In[6]:
+
+
+# Load the data specifying the column separator
 data = pd.read_csv('DataCapstone.csv', delimiter=';', decimal=' ')
 
 # Strip any extra spaces from the column names
@@ -239,8 +265,12 @@ plt.grid(True)
 plt.show()
 
 
+# # ASSETS CORRELATION
 
-# 8. Load the data specifying the column separator and the correct decimal separator
+# In[7]:
+
+
+# Load the data specifying the column separator and the correct decimal separator
 data = pd.read_csv('DataCapstone.csv', delimiter=';', decimal=',')
 
 # Convert the 'Date' column to datetime format
@@ -257,8 +287,10 @@ plt.title('Correlation Matrix with Color Coding')
 plt.show()
 
 
+# In[8]:
 
-# 9. Load the data
+
+# Load the data
 data = pd.read_csv('DataCapstone.csv', delimiter=';', decimal=',')
 data['Date'] = pd.to_datetime(data['Date'], dayfirst=True)
 data.set_index('Date', inplace=True)
@@ -297,8 +329,12 @@ def interpret_selected_correlations(df, pairs):
 interpret_selected_correlations(data, pairs)
 
 
+# # STUDY OF ASSET YIELDS
 
-# 10. Load the data specifying the column separator
+# In[9]:
+
+
+# Load the data specifying the column separator
 data = pd.read_csv('DataCapstone.csv', delimiter=';', decimal='.')
 
 # Strip any extra spaces from the column names
@@ -350,61 +386,10 @@ plt.tight_layout()
 plt.show()
 
 
-
-# 11. Load the data specifying the column separator
-data = pd.read_csv('DataCapstone.csv', delimiter=';', decimal='.')
-
-# Strip any extra spaces from the column names
-data.columns = data.columns.str.strip()
-
-# Convert the data in the columns to float after replacing commas with periods and removing spaces
-data['S&P 500 PRICE IN USD'] = data['S&P 500 PRICE IN USD'].str.replace(' ', '').str.replace(',', '.').astype(float)
-data['GOLD PRICE IN USD'] = data['GOLD PRICE IN USD'].str.replace(' ', '').str.replace(',', '.').astype(float)
-data['BITCOIN PRICE IN USD'] = data['BITCOIN PRICE IN USD'].str.replace(' ', '').str.replace(',', '.').astype(float)
-data['ETHEREUM PRICE IN USD'] = data['ETHEREUM PRICE IN USD'].str.replace(' ', '').str.replace(',', '.').astype(float)
-
-# Convert the 'Date' column to datetime type
-data['Date'] = pd.to_datetime(data['Date'], format='%d/%m/%Y')
-
-# Calculate simple returns as the percentage change between consecutive prices
-data['S&P 500 RETURN'] = (data['S&P 500 PRICE IN USD'] / data['S&P 500 PRICE IN USD'].shift(1) - 1) * 100
-data['GOLD RETURN'] = (data['GOLD PRICE IN USD'] / data['GOLD PRICE IN USD'].shift(1) - 1) * 100
-data['BITCOIN RETURN'] = (data['BITCOIN PRICE IN USD'] / data['BITCOIN PRICE IN USD'].shift(1) - 1) * 100
-data['ETHEREUM RETURN'] = (data['ETHEREUM PRICE IN USD'] / data['ETHEREUM PRICE IN USD'].shift(1) - 1) * 100
-
-# Create four subplots
-fig, axes = plt.subplots(nrows=2, ncols=2, figsize=(14, 10))
-
-# Plot each asset's simple returns on a separate subplot
-axes[0, 0].plot(data['Date'], data['S&P 500 RETURN'], color='black')
-axes[0, 0].set_title('S&P 500 Returns')
-axes[0, 0].set_ylabel('Simple Return (%)')
-axes[0, 0].grid(True)
-
-axes[0, 1].plot(data['Date'], data['GOLD RETURN'], color='gold')
-axes[0, 1].set_title('Gold Returns')
-axes[0, 1].grid(True)
-
-axes[1, 0].plot(data['Date'], data['BITCOIN RETURN'], color='green')
-axes[1, 0].set_title('Bitcoin Returns')
-axes[1, 0].set_ylabel('Simple Return (%)')
-axes[1, 0].set_xlabel('Date')
-axes[1, 0].grid(True)
-
-axes[1, 1].plot(data['Date'], data['ETHEREUM RETURN'], color='lightgreen')
-axes[1, 1].set_title('Ethereum Returns')
-axes[1, 1].set_xlabel('Date')
-axes[1, 1].grid(True)
-
-# Adjust layout
-plt.tight_layout()
-
-# Show the plot
-plt.show()
+# In[10]:
 
 
-
-# 12. Load the data specifying the column separator
+# Load the data specifying the column separator
 data = pd.read_csv('DataCapstone.csv', delimiter=';', decimal='.')
 
 # Strip any extra spaces from the column names
@@ -449,7 +434,11 @@ print_significance(correlation_gold_ethereum, p_value_gold_ethereum, "Gold and E
 print_significance(correlation_bitcoin_ethereum, p_value_bitcoin_ethereum, "Bitcoin and Ethereum")
 
 
-# 13
+# # BOLLINGER BANDS
+
+# In[30]:
+
+
 def calculate_bollinger_bands(df, column, window=20):
     df[f'{column}_SMA'] = df[column].rolling(window=window).mean()
     df[f'{column}_STD'] = df[column].rolling(window=window).std()
@@ -502,8 +491,12 @@ plot_bollinger_bands(data, 'BITCOIN PRICE IN USD', 'Bitcoin', assets_colors['BIT
 plot_bollinger_bands(data, 'ETHEREUM PRICE IN USD', 'Ethereum', assets_colors['ETHEREUM PRICE IN USD'])
 
 
+# # LINEAR REGRESSION
 
-# 14. Load the data specifying the column separator
+# In[11]:
+
+
+# Load the data specifying the column separator
 data = pd.read_csv('DataCapstone.csv', delimiter=';', decimal='.')
 
 # Strip any extra spaces from the column names
@@ -566,8 +559,10 @@ plt.tight_layout()
 plt.show()
 
 
+# In[12]:
 
-# 15. Load the data specifying the column separator
+
+# Load the data specifying the column separator
 data = pd.read_csv('DataCapstone.csv', delimiter=';', decimal='.')
 
 # Strip any extra spaces from the column names
@@ -626,8 +621,10 @@ regression_summary_df = pd.DataFrame(regression_results).T  # Transpose to have 
 print(regression_summary_df)
 
 
+# In[13]:
 
-# 16. Load the data specifying the column separator
+
+# Load the data specifying the column separator
 data = pd.read_csv('DataCapstone.csv', delimiter=';', decimal=' ')
 
 # Strip any extra spaces from the column names
@@ -680,8 +677,12 @@ plt.tight_layout(rect=[0, 0.03, 1, 0.97])
 plt.show()
 
 
+# # LOG-LINEAR REGRESSION
 
-# 17. Load the data specifying the column separator
+# In[32]:
+
+
+# Load the data specifying the column separator
 data = pd.read_csv('DataCapstone.csv', delimiter=';', decimal='.')
 
 # Strip any extra spaces from the column names
@@ -750,8 +751,10 @@ plt.tight_layout()
 plt.show()
 
 
+# In[14]:
 
-# 18. Load the data specifying the column separator
+
+# Load the data specifying the column separator
 data = pd.read_csv('DataCapstone.csv', delimiter=';', decimal='.')
 
 # Strip any extra spaces from the column names
@@ -816,8 +819,10 @@ regression_summary_df = pd.DataFrame(regression_results).T  # Transpose to have 
 print(regression_summary_df)
 
 
+# In[34]:
 
-# 19. Load the data specifying the column separator
+
+# Load the data specifying the column separator
 data = pd.read_csv('DataCapstone.csv', delimiter=';', decimal='.')
 
 # Strip any extra spaces from the column names
@@ -879,9 +884,12 @@ plt.tight_layout(rect=[0, 0.03, 1, 0.97])
 plt.show()
 
 
+# # ARIMA MODEL
+
+# In[15]:
 
 
-# 20. Load the data
+# Load the data
 data = pd.read_csv('DataCapstone.csv', delimiter=';', decimal=' ')
 data.columns = [col.strip() for col in data.columns]
 data['Date'] = pd.to_datetime(data['Date'], format='%d/%m/%Y')
@@ -917,10 +925,12 @@ assets = ['S&P 500 PRICE IN USD', 'GOLD PRICE IN USD', 'BITCOIN PRICE IN USD', '
 # Perform ADF test for each asset
 for asset in assets:
     perform_adf_test(data[asset], asset)
-    
-    
-    
-# 21. Load the data
+
+
+# In[16]:
+
+
+# Load the data
 data = pd.read_csv('DataCapstone.csv', delimiter=';', decimal=' ')
 data.columns = [col.strip() for col in data.columns]
 data['Date'] = pd.to_datetime(data['Date'], format='%d/%m/%Y')
@@ -953,10 +963,15 @@ def plot_acf_pacf_differenced(series, name):
 # Perform ACF and PACF for each asset after differencing
 for asset in assets:
     plot_acf_pacf_differenced(data[asset].dropna(), asset)
-    
-     
-    
-# 22. Fit ARIMA model for Bitcoin
+
+
+# In[18]:
+
+
+data.index = pd.to_datetime(data.index)
+data = data.asfreq('B')
+
+# Fit ARIMA model for Bitcoin
 btc_model = ARIMA(data['BITCOIN PRICE IN USD'], order=(1, 1, 1))
 btc_model_fit = btc_model.fit()
 
@@ -986,8 +1001,13 @@ ax[1].legend()
 plt.show()
 
 
+# In[36]:
 
-# 23. Load the data
+
+from statsmodels.tsa.arima.model import ARIMA
+import warnings
+
+# Load the data
 data = pd.read_csv('DataCapstone.csv', delimiter=';', decimal=' ')
 data.columns = [col.strip() for col in data.columns]
 data['Date'] = pd.to_datetime(data['Date'], format='%d/%m/%Y')
@@ -1050,10 +1070,17 @@ for asset in assets:
 
     print("\nSummary for the best model according to BIC:")
     print(best_bic_model.summary())
-    
-    
-    
-# 24. Load the data
+
+
+# # PREDICTIONS ARIMA MODEL
+
+# In[37]:
+
+
+from statsmodels.tsa.arima.model import ARIMA
+import matplotlib.pyplot as plt
+
+# Load the data
 import pandas as pd
 data = pd.read_csv('DataCapstone.csv', delimiter=';', decimal=' ')
 data.columns = [col.strip() for col in data.columns]
@@ -1143,8 +1170,27 @@ plt.tight_layout()
 plt.show()
 
 
+# # LSTM MODEL WITHOUT CORRELATION WITH S&P500 AND GOLD
 
-# 25. Load the CSV file into a DataFrame
+# In[19]:
+
+
+pip install tensorflow
+
+
+# In[38]:
+
+
+import pandas as pd
+import numpy as np
+from sklearn.preprocessing import MinMaxScaler
+import matplotlib.pyplot as plt
+import tensorflow as tf
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import LSTM, Dense, Dropout
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+
+# Load the CSV file into a DataFrame
 DataCapstone = pd.read_csv('DataCapstone.csv', delimiter=';', decimal=',')
 
 # Select relevant features using the given column names
@@ -1238,9 +1284,42 @@ plt.title('Training and Validation Loss')
 plt.show()
 
 
+# In[39]:
 
 
-# 26. Calculate residuals
+# Calculate evaluation metrics
+def mean_absolute_percentage_error(y_true, y_pred):
+    return np.mean(np.abs((y_true - y_pred) / y_true)) * 100
+
+btc_actual = y_test_inv[:, 0]
+eth_actual = y_test_inv[:, 1]
+btc_predictions = predictions_inv[:, 0]
+eth_predictions = predictions_inv[:, 1]
+
+btc_mae = mean_absolute_error(btc_actual, btc_predictions)
+btc_mape = mean_absolute_percentage_error(btc_actual, btc_predictions)
+btc_r2 = r2_score(btc_actual, btc_predictions)
+
+eth_mae = mean_absolute_error(eth_actual, eth_predictions)
+eth_mape = mean_absolute_percentage_error(eth_actual, eth_predictions)
+eth_r2 = r2_score(eth_actual, eth_predictions)
+
+# Print evaluation metrics
+print("\nBitcoin Prediction Metrics:")
+print(f"Mean Absolute Error: {btc_mae}")
+print(f"Mean Absolute Percentage Error: {btc_mape}%")
+print(f"R-squared Score: {btc_r2}")
+
+print("\nEthereum Prediction Metrics:")
+print(f"Mean Absolute Error: {eth_mae}")
+print(f"Mean Absolute Percentage Error: {eth_mape}%")
+print(f"R-squared Score: {eth_r2}")
+
+
+# In[40]:
+
+
+# Calculate residuals
 residuals_btc = y_test_inv[:, 0] - predictions_inv[:, 0]
 residuals_eth = y_test_inv[:, 1] - predictions_inv[:, 1]
 
@@ -1275,9 +1354,18 @@ plt.title('Bitcoin and Ethereum Residuals Analysis')
 plt.show()
 
 
+# # PREDICTIONS LSTM MODEL
+
+# In[25]:
 
 
-# 27. Normalize the features
+import numpy as np
+from sklearn.preprocessing import MinMaxScaler
+import tensorflow as tf
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import LSTM, Dense, Dropout
+
+# Normalize the features
 scaler = MinMaxScaler()
 scaled_data = scaler.fit_transform(DataCapstone[features])
 
@@ -1387,9 +1475,21 @@ plt.grid()
 plt.show()
 
 
+# # LSTM MODEL WITH CORRELATION WITH S&P500 AND GOLD
+
+# In[1]:
 
 
-# 28. Load the CSV file into a DataFrame
+import pandas as pd
+import numpy as np
+from sklearn.preprocessing import MinMaxScaler
+import matplotlib.pyplot as plt
+import tensorflow as tf
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import LSTM, Dense, Dropout
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+
+# Load the CSV file into a DataFrame
 DataCapstone = pd.read_csv('DataCapstone.csv', delimiter=';', decimal=',')
 
 # Select relevant features using the given column names
@@ -1494,8 +1594,10 @@ plt.title('Training and Validation Loss')
 plt.show()
 
 
+# In[9]:
 
-# 29. Calculate evaluation metrics for Bitcoin
+
+# Calculate evaluation metrics for Bitcoin
 btc_actual = y_test_inv[:, 0]
 btc_predictions = predictions_inv[:, 0]
 btc_mae = mean_absolute_error(btc_actual, btc_predictions)
@@ -1521,8 +1623,20 @@ print(f"Mean Absolute Percentage Error: {eth_mape}%")
 print(f"R-squared Score: {eth_r2}")
 
 
+# # PREDICTIONS LSTM MODEL (2)
 
-# 30. Load the CSV file into a DataFrame
+# In[8]:
+
+
+import pandas as pd
+import numpy as np
+from sklearn.preprocessing import MinMaxScaler
+import tensorflow as tf
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import LSTM, Dense, Dropout
+import matplotlib.pyplot as plt
+
+# Load the CSV file into a DataFrame
 DataCapstone = pd.read_csv('DataCapstone.csv', delimiter=';', decimal=',')
 
 # Convert the 'Date' column to datetime
@@ -1656,3 +1770,10 @@ plt.ylabel('ETHEREUM PRICE IN USD')
 plt.title('Ethereum Future Price Prediction')
 plt.grid()
 plt.show()
+
+
+# In[ ]:
+
+
+
+
