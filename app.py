@@ -224,8 +224,8 @@ with tab7:
     if asset_name == "Bitcoin":
         st.write("""
         <div class="metrics">
-        <br>Bitcoin Prediction Metrics:<br>
-        Mean Absolute Error: 1502.8202759051017<br>
+        Bitcoin Prediction Metrics:<br>
+        <br>Mean Absolute Error: 1502.8202759051017<br>
         Mean Absolute Percentage Error: 3.5216085420893433%<br>
         R-squared Score: 0.968159835080644
         </div>
@@ -233,8 +233,8 @@ with tab7:
     elif asset_name == "Ethereum":
         st.write("""
         <div class="metrics">
-        <br>Ethereum Prediction Metrics:<br>
-        Mean Absolute Error: 104.6619032567737<br>
+        Ethereum Prediction Metrics:<br>
+        <br>Mean Absolute Error: 104.6619032567737<br>
         Mean Absolute Percentage Error: 4.634681268119115%<br>
         R-squared Score: 0.9399836079679001
         </div>
