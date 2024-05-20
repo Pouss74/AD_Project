@@ -111,7 +111,7 @@ st.markdown(
     """, 
     unsafe_allow_html=True
 )
-st.title("Future is Yours!")
+st.title("Future is Yours")
 
 st.markdown(
     """
