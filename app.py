@@ -56,8 +56,8 @@ st.markdown(
         width: 50%;
         margin: 0 auto;
     }
-    .css-1q8dd3e {
-        color: #ffffff; /* White text for labels */
+    .css-1q8dd3e, .css-1d391kg, .css-18e3th9, .stSelectbox label, .stDateInput label {
+        color: #ffffff !important; /* White text for labels */
     }
     </style>
     """,
@@ -86,7 +86,8 @@ def get_forecast_image_path(asset, model):
 st.title("Future is Yours!")
 
 # Create tabs
-tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs(["Historical Data", "Returns", "Correlation", "Linear Regression", "ARIMA", "LSTM 1", "LSTM 2"])
+tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs(
+    ["Historical Data", "Returns", "Correlation", "Re-Scale Graphic", "Linear Regression", "ARIMA", "LSTM 1", "LSTM 2"])
 
 # Historical Data tab
 with tab1:
@@ -100,10 +101,6 @@ with tab1:
     
     if st.button("Show Asset Price"):
         buf = generate_asset_price_graph(asset_name, start_date, end_date)
-        st.image(buf, use_column_width=True)
-    
-    if st.button("Show Normalized Prices"):
-        buf = generate_normalized_graph(start_date, end_date)
         st.image(buf, use_column_width=True)
 
 # Returns tab
@@ -127,22 +124,36 @@ with tab3:
     Correlation between BITCOIN PRICE IN USD and ETHEREUM PRICE IN USD is very strong (0.923), and is significant (p-value: 0.0000).
     """)
 
-# Linear Regression tab
+# Re-Scale Graphic tab
 with tab4:
+    st.header("Re-Scale Graphic")
+
+    # Input for asset price graph
+    asset_name = st.selectbox("Select an asset to re-scale", ["S&P 500 PRICE IN USD", "GOLD PRICE IN USD", "BITCOIN PRICE IN USD",
+                                                  "ETHEREUM PRICE IN USD"], key="rescale_asset")
+    start_date = st.date_input("Start date", value=pd.to_datetime("2019-01-01"), key="rescale_start_date")
+    end_date = st.date_input("End date", value=pd.to_datetime("2019-12-31"), key="rescale_end_date")
+    
+    if st.button("Show Normalized Prices"):
+        buf = generate_normalized_graph(start_date, end_date)
+        st.image(buf, use_column_width=True)
+
+# Linear Regression tab
+with tab5:
     st.header("Linear Regression")
     st.write("Content for Linear Regression tab")
 
 # ARIMA tab
-with tab5:
+with tab6:
     st.header("ARIMA")
     st.write("Content for ARIMA tab")
 
 # LSTM 1 tab
-with tab6:
+with tab7:
     st.header("LSTM 1")
     st.write("Content for LSTM 1 tab")
 
 # LSTM 2 tab
-with tab7:
+with tab8:
     st.header("LSTM 2")
     st.write("Content for LSTM 2 tab")
