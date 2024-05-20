@@ -91,7 +91,7 @@ st.title("Future is Yours!")
 
 # Create tabs
 tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs(
-    ["Historical Data", "Re-Scale Graphic", "Returns", "Correlation", "Linear Regression", "ARIMA", "LSTM 1", "LSTM 2"])
+    ["Historical Data", "Re-Scale Graphic", "Returns", "Correlation", "Regression", "ARIMA", "LSTM 1", "LSTM 2"])
 
 # Historical Data tab
 with tab1:
@@ -103,9 +103,9 @@ with tab1:
     start_date = st.date_input("Start date", value=pd.to_datetime("2019-01-01"), key="start_date")
     end_date = st.date_input("End date", value=pd.to_datetime("2019-12-31"), key="end_date")
     
-    if st.button("Show Asset Price"):
-        buf = generate_asset_price_graph(asset_name, start_date, end_date)
-        st.image(buf, use_column_width=True)
+    # Automatically display the asset price graph based on the selected dates
+    buf = generate_asset_price_graph(asset_name, start_date, end_date)
+    st.image(buf, use_column_width=True)
 
 # Re-Scale Graphic tab
 with tab2:
@@ -134,29 +134,24 @@ with tab4:
     
     st.write("""
     <div class="correlation-text">
-    Correlation between S&P 500 PRICE IN USD and BITCOIN PRICE IN USD is very strong (0.861), and is significant (p-value: 0.0000).<br>
-    Correlation between S&P 500 PRICE IN USD and ETHEREUM PRICE IN USD is very strong (0.889), and is significant (p-value: 0.0000).<br>
-    Correlation between GOLD PRICE IN USD and BITCOIN PRICE IN USD is strong (0.622), and is significant (p-value: 0.0000).<br>
-    Correlation between GOLD PRICE IN USD and ETHEREUM PRICE IN USD is moderate (0.595), and is significant (p-value: 0.0000).<br>
+    Correlation between S&P 500 PRICE IN USD and BITCOIN PRICE IN USD is very strong (0.861), and is significant (p-value: 0.0000).<br><br>
+    Correlation between S&P 500 PRICE IN USD and ETHEREUM PRICE IN USD is very strong (0.889), and is significant (p-value: 0.0000).<br><br>
+    Correlation between GOLD PRICE IN USD and BITCOIN PRICE IN USD is strong (0.622), and is significant (p-value: 0.0000).<br><br>
+    Correlation between GOLD PRICE IN USD and ETHEREUM PRICE IN USD is moderate (0.595), and is significant (p-value: 0.0000).<br><br>
     Correlation between BITCOIN PRICE IN USD and ETHEREUM PRICE IN USD is very strong (0.923), and is significant (p-value: 0.0000).
     </div>
     """, unsafe_allow_html=True)
 
-# Linear Regression tab
+# Regression tab
 with tab5:
-    st.header("Linear Regression")
-    
-    # Buttons for Linear Regression and Log-Linear Regression
-    if st.button("Linear Regression"):
-        regression_type = "linear"
-    elif st.button("Log-Linear Regression"):
-        regression_type = "log-linear"
-    else:
-        regression_type = None
+    st.header("Regression")
     
     # Asset selection
     asset_name = st.selectbox("Select an asset for regression", ["S&P 500 PRICE IN USD", "GOLD PRICE IN USD", "BITCOIN PRICE IN USD", "ETHEREUM PRICE IN USD"], key="regression_asset")
-    
+
+    # Buttons for Linear Regression and Log-Linear Regression
+    regression_type = st.radio("Select Regression Type", ["Linear Regression", "Log-Linear Regression"])
+
     # Placeholder content based on the selected regression type
     if regression_type:
         st.write(f"You have selected {regression_type.replace('-', ' ').title()} for {asset_name}.")
