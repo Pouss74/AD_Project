@@ -25,12 +25,39 @@ st.markdown(
         font-size: 3em; /* Larger font size for the title */
         text-align: center; /* Center align the title */
         font-style: italic; /* Italicize the title */
+        color: #ffffff; /* White text for title */
     }
     .stTabs [data-baseweb="tab-list"] {
         justify-content: center; /* Center the tabs */
     }
     .stTabs [data-baseweb="tab"] {
         color: #ffffff !important; /* Ensure tab text is white */
+    }
+    .stButton>button {
+        background-color: #ffffff; /* White background for buttons */
+        color: #000000; /* Black text for buttons */
+        border: none; /* Remove border */
+        padding: 10px 20px; /* Add padding */
+        margin: 5px; /* Add margin */
+        border-radius: 5px; /* Add rounded corners */
+        font-size: 16px; /* Increase font size */
+        cursor: pointer; /* Pointer cursor on hover */
+    }
+    .stButton>button:hover {
+        background-color: #dddddd; /* Slightly darker on hover */
+    }
+    .center-content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+    .date-input {
+        width: 50%;
+        margin: 0 auto;
+    }
+    .css-1q8dd3e {
+        color: #ffffff; /* White text for labels */
     }
     </style>
     """,
@@ -59,31 +86,29 @@ def get_forecast_image_path(asset, model):
 st.title("Future is Yours!")
 
 # Create tabs
-tab1, tab2 = st.tabs(["Historical Data", "Forecasts"])
+tab1, tab2, tab3 = st.tabs(["Historical Data", "Forecasts", "Correlation"])
 
 # Historical Data tab
 with tab1:
     st.header("Historical Data")
-
+    
     # Input for asset price graph
     asset_name = st.selectbox("Select an asset", ["S&P 500 PRICE IN USD", "GOLD PRICE IN USD", "BITCOIN PRICE IN USD",
                                                   "ETHEREUM PRICE IN USD"])
-    start_date = st.date_input("Start date", value=pd.to_datetime("2019-01-01"))
-    end_date = st.date_input("End date", value=pd.to_datetime("2019-12-31"))
-
-    if st.button("Show Asset Price"):
-        buf = generate_asset_price_graph(asset_name, start_date, end_date)
-        st.image(buf, use_column_width=True)
-
-    # Button to show normalized graph
-    if st.button("Show Normalized Prices"):
-        buf = generate_normalized_graph(start_date, end_date)
-        st.image(buf, use_column_width=True)
-
-    # Button to show correlation matrix
-    if st.button("Show Correlation Matrix"):
-        buf = generate_correlation_matrix()
-        st.image(buf, use_column_width=True)
+    start_date = st.date_input("Start date", value=pd.to_datetime("2019-01-01"), key="start_date")
+    end_date = st.date_input("End date", value=pd.to_datetime("2019-12-31"), key="end_date")
+    
+    # Centering the buttons
+    with st.container():
+        col1, col2 = st.columns([1,1])
+        with col1:
+            if st.button("Show Asset Price"):
+                buf = generate_asset_price_graph(asset_name, start_date, end_date)
+                st.image(buf, use_column_width=True)
+        with col2:
+            if st.button("Show Normalized Prices"):
+                buf = generate_normalized_graph(start_date, end_date)
+                st.image(buf, use_column_width=True)
 
 # Forecasts tab
 with tab2:
@@ -97,3 +122,11 @@ with tab2:
     if st.button("Show Forecast"):
         image_path = get_forecast_image_path(forecast_asset, forecast_model)
         st.image(image_path, caption=f"{forecast_asset} forecast using {forecast_model}", use_column_width=True)
+
+# Correlation tab
+with tab3:
+    st.header("Correlation")
+    
+    if st.button("Show Correlation Matrix"):
+        buf = generate_correlation_matrix()
+        st.image(buf, use_column_width=True)
