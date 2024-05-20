@@ -224,7 +224,7 @@ with tab7:
     if asset_name == "Bitcoin":
         st.write("""
         <div class="metrics">
-        Bitcoin Prediction Metrics:<br>
+        Bitcoin Prediction Metrics of the training:<br>
         <br>Mean Absolute Error: 1502.8202759051017<br>
         Mean Absolute Percentage Error: 3.5216085420893433%<br>
         R-squared Score: 0.968159835080644
@@ -233,7 +233,7 @@ with tab7:
     elif asset_name == "Ethereum":
         st.write("""
         <div class="metrics">
-        Ethereum Prediction Metrics:<br>
+        Ethereum Prediction Metrics of the training:<br>
         <br>Mean Absolute Error: 104.6619032567737<br>
         Mean Absolute Percentage Error: 4.634681268119115%<br>
         R-squared Score: 0.9399836079679001
@@ -254,7 +254,7 @@ with tab8:
     if asset_name == "Bitcoin":
         st.write("""
         <div class="metrics">
-        Bitcoin Prediction Metrics:<br>
+        Bitcoin Prediction Metrics of the training:<br>
         <br>Mean Absolute Error: 3111.369628773971<br>
         Mean Absolute Percentage Error: 6.991318338500592%<br>
         R-squared Score: 0.884409707322686
@@ -263,7 +263,7 @@ with tab8:
     elif asset_name == "Ethereum":
         st.write("""
         <div class="metrics">
-        Ethereum Prediction Metrics:<br>
+        Ethereum Prediction Metrics of the training:<br>
        <br> Mean Absolute Error: 143.032266023599<br>
         Mean Absolute Percentage Error: 6.550255220961676%<br>
         R-squared Score: 0.9114275560790139
