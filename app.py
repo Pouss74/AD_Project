@@ -73,6 +73,13 @@ st.markdown(
         margin-top: 20px;
         line-height: 1.6;
     }
+    .description {
+        text-align: center;
+        color: #ffffff;
+        margin-top: 20px;
+        font-size: 1.1em;
+        line-height: 1.6;
+    }
     </style>
     """,
     unsafe_allow_html=True
@@ -105,6 +112,17 @@ st.markdown(
     unsafe_allow_html=True
 )
 st.title("Future is Yours!")
+
+st.markdown(
+    """
+    <div class="description">
+    Managing asset correlations and predicting price movements can be time-consuming and complex. Imagine what you could achieve if you had an efficient, streamlined way to handle these tasks!<br><br>
+    My project simplifies the analysis of digital (Bitcoin and Ethereum) and traditional (Gold and S&P 500) asset prices from January 1, 2019, to April 9, 2024. Utilizing statistical analysis and predictive models like regression, ARIMA, and LSTM networks, we uncover the dynamic interactions between these assets. This enables investors, analysts, and policymakers to make informed decisions and optimize their investment and risk management strategies.<br><br>
+    Thank you for using our site to enhance your financial insights.
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
 # Create tabs
 tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs(
@@ -233,8 +251,8 @@ with tab8:
     if asset_name == "Bitcoin":
         st.write("""
         <div class="metrics">
-        <br>Bitcoin Prediction Metrics:<br>
-        Mean Absolute Error: 3111.369628773971<br>
+        Bitcoin Prediction Metrics:<br>
+        <br>Mean Absolute Error: 3111.369628773971<br>
         Mean Absolute Percentage Error: 6.991318338500592%<br>
         R-squared Score: 0.884409707322686
         </div>
@@ -242,8 +260,8 @@ with tab8:
     elif asset_name == "Ethereum":
         st.write("""
         <div class="metrics">
-        <br>Ethereum Prediction Metrics:<br>
-        Mean Absolute Error: 143.032266023599<br>
+        Ethereum Prediction Metrics:<br>
+       <br> Mean Absolute Error: 143.032266023599<br>
         Mean Absolute Percentage Error: 6.550255220961676%<br>
         R-squared Score: 0.9114275560790139
         </div>
