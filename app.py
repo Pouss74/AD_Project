@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from backend import generate_asset_price_graph, generate_normalized_graph, generate_correlation_matrix
+from backend import generate_asset_price_graph, generate_rescaled_plot, generate_correlation_matrix
 
 # Apply custom CSS for the desired styling
 st.markdown(
@@ -154,7 +154,7 @@ with tab2:
     end_date = st.date_input("End date", value=pd.to_datetime("2019-12-31"), key="rescale_end_date")
     
     # Automatically display the normalized graph based on the selected date range
-    buf = generate_normalized_graph(start_date, end_date)
+    buf = generate_rescaled_plot(start_date, end_date)
     st.image(buf, use_column_width=True)
 
 # Returns tab

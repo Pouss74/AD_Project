@@ -44,47 +44,60 @@ def generate_asset_price_graph(asset_name, start_date, end_date):
     return buf
 
 
-def generate_normalized_graph(start_date, end_date):
-    # Load the data
-    data = pd.read_csv('DataCapstone.csv', delimiter=';', decimal=',')
+def generate_rescaled_plot(start_date, end_date):
+    # Load the data specifying the column separator
+    data = pd.read_csv('DataCapstone.csv', delimiter=';', decimal=' ')
 
-    # Convert the 'Date' column to datetime format
-    data['Date'] = pd.to_datetime(data['Date'], format='%d/%m/%Y', dayfirst=True)  # Ensure the date format is correct
+    # Strip any extra spaces from the column names
+    data.columns = data.columns.str.strip()
 
-    # Filter data by date
+    # Convert the data in the columns to float after replacing commas with periods and removing spaces
+    data['S&P 500 PRICE IN USD'] = data['S&P 500 PRICE IN USD'].str.replace(' ', '').str.replace(',', '.').astype(float)
+    data['GOLD PRICE IN USD'] = data['GOLD PRICE IN USD'].str.replace(' ', '').str.replace(',', '.').astype(float)
+    data['BITCOIN PRICE IN USD'] = data['BITCOIN PRICE IN USD'].str.replace(' ', '').str.replace(',', '.').astype(float)
+    data['ETHEREUM PRICE IN USD'] = data['ETHEREUM PRICE IN USD'].str.replace(' ', '').str.replace(',', '.').astype(float)
+
+    # Convert the 'Date' column to datetime type
+    data['Date'] = pd.to_datetime(data['Date'], format='%d/%m/%Y')
+
+    # Filter data between start_date and end_date
     mask = (data['Date'] >= pd.to_datetime(start_date)) & (data['Date'] <= pd.to_datetime(end_date))
     filtered_data = data.loc[mask]
 
-    # List of assets to plot
-    assets = ['S&P 500 PRICE IN USD', 'GOLD PRICE IN USD', 'BITCOIN PRICE IN USD', 'ETHEREUM PRICE IN USD']
+    # Create a single plot
+    fig, ax1 = plt.subplots(figsize=(12, 6))
 
-    # Normalize the values relative to their values at the start date
-    for asset in assets:
-        filtered_data[asset] = filtered_data[asset] / filtered_data[asset].iloc[0]
+    # Plot Ethereum, S&P 500, and Gold on the primary y-axis
+    ax1.plot(filtered_data['Date'], filtered_data['S&P 500 PRICE IN USD'], color='black', label='S&P 500')
+    ax1.plot(filtered_data['Date'], filtered_data['GOLD PRICE IN USD'], color='gold', label='Gold')
+    ax1.plot(filtered_data['Date'], filtered_data['ETHEREUM PRICE IN USD'], color='lightgreen', label='Ethereum')
+    ax1.set_xlabel('Date')
+    ax1.set_ylabel('Price in USD')
+    ax1.tick_params(axis='y')
 
-    # Create the plot
-    plt.figure(figsize=(10, 5))
-    for asset in assets:
-        plt.plot(filtered_data['Date'], filtered_data[asset], label=asset)
+    # Create a secondary y-axis for Bitcoin
+    ax2 = ax1.twinx()
+    ax2.plot(filtered_data['Date'], filtered_data['BITCOIN PRICE IN USD'], color='green', label='Bitcoin (secondary axis)')
+    ax2.set_ylabel('Bitcoin Price in USD')
+    ax2.tick_params(axis='y')
 
-    plt.xlabel('Date')
-    plt.ylabel('Normalized Price')
-    plt.title(f'Normalized Prices of Assets from {start_date} to {end_date}')
-    plt.legend()
+    # Add a legend with all labels
+    lines, labels = ax1.get_legend_handles_labels()
+    lines2, labels2 = ax2.get_legend_handles_labels()
+    ax1.legend(lines + lines2, labels + labels2, loc='upper left')
+
+    # Title and grid
+    plt.title('Price Evolution of S&P 500, Gold, Ethereum, and Bitcoin')
     plt.grid(True)
 
-    # Limit the number of ticks on the y-axis
-    plt.gca().yaxis.set_major_locator(MaxNLocator(nbins=10))  # Limit to 10 ticks
-
-    # Adjust layout to ensure labels are not cut off
-    plt.tight_layout()
-
-    # Save the plot to a buffer
+    # Save the plot to a BytesIO object
     buf = io.BytesIO()
     plt.savefig(buf, format='png')
     buf.seek(0)
+    plt.close(fig)
 
     return buf
+
 
 
 def generate_correlation_matrix():
