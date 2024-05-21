@@ -198,10 +198,6 @@ with tab5:
     
     # Load and prepare data
     data = load_and_prepare_data()
-
-# Regression tab
-with st.tab("Regression"):
-    st.header("Regression")
     
     # Asset selection
     asset_name = st.selectbox("Select an asset for regression", ["S&P 500", "GOLD", "BITCOIN", "ETHEREUM"], key="regression_asset")
