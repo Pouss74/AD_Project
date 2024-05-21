@@ -179,7 +179,6 @@ def generate_plot(data, asset, start_date, end_date):
     return buf
 
 
-# Load and prepare the data
 def load_and_prepare_data():
     # Load the data specifying the column separator
     data = pd.read_csv('DataCapstone.csv', delimiter=';', decimal='.')
@@ -202,15 +201,22 @@ def load_and_prepare_data():
 
     return data
 
-# Function to perform linear regression and plot results
 def plot_regression(data, asset, start_date, end_date, log=False):
+    # Map asset names to column names
+    asset_column = {
+        'S&P 500': 'S&P 500 PRICE IN USD',
+        'GOLD': 'GOLD PRICE IN USD',
+        'BITCOIN': 'BITCOIN PRICE IN USD',
+        'ETHEREUM': 'ETHEREUM PRICE IN USD'
+    }
+    
     # Filter data between start_date and end_date
     mask = (data['Date'] >= pd.to_datetime(start_date)) & (data['Date'] <= pd.to_datetime(end_date))
     filtered_data = data.loc[mask]
 
     # Convert date to ordinal numbers for regression analysis
     dates = date2num(filtered_data['Date'])
-    prices = filtered_data[f'{asset} PRICE IN USD']
+    prices = filtered_data[asset_column[asset]]
 
     if log:
         prices = np.log(prices)
