@@ -170,9 +170,9 @@ with tab3:
     end_date = st.date_input('End date', pd.to_datetime('2022-01-01'))
 
     # Generate and display the plot if dates and asset are selected
-    if start_date and end_date and asset:
-        plot_buf = generate_plot(data, asset, start_date, end_date)
-        st.image(plot_buf, caption=f'{asset} Returns from {start_date} to {end_date}')
+    #if start_date and end_date and asset:
+     #   plot_buf = generate_plot(data, asset, start_date, end_date)
+      #  st.image(plot_buf, caption=f'{asset} Returns from {start_date} to {end_date}')
     
 # Correlation tab
 with tab4:
