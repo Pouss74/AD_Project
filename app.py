@@ -161,10 +161,18 @@ with tab2:
 with tab3:
     st.header("Returns")
     
-    # Asset selection
-    asset_name = st.selectbox("Select an asset for returns", ["S&P 500 PRICE IN USD", "GOLD PRICE IN USD", "BITCOIN PRICE IN USD", "ETHEREUM PRICE IN USD"], key="returns_asset")
-    st.write(f"Selected asset for returns: {asset_name}")
-    # Add logic to display returns analysis based on `asset_name`
+# Load and prepare data
+data = load_and_prepare_data()
+
+# User inputs for asset selection and date range
+asset = st.selectbox('Select Asset', ['S&P 500', 'GOLD', 'BITCOIN', 'ETHEREUM'])
+start_date = st.date_input('Start date', pd.to_datetime('2021-01-01'))
+end_date = st.date_input('End date', pd.to_datetime('2022-01-01'))
+
+# Generate and display the plot if dates and asset are selected
+if start_date and end_date and asset:
+    plot_buf = generate_plot(data, asset, start_date, end_date)
+    st.image(plot_buf, caption=f'{asset} Returns from {start_date} to {end_date}')
 
 # Correlation tab
 with tab4:
