@@ -153,7 +153,9 @@ def compute_regression_statistics(data, asset, start_date, end_date, log=False):
     else:
         label_prefix = ''
 
-    x = dates.reshape(-1, 1)
+    # Normalize dates
+    dates_normalized = dates - dates.mean()
+    x = dates_normalized.reshape(-1, 1)
     y = prices.values.reshape(-1, 1)
     
     model = LinearRegression()
@@ -195,7 +197,9 @@ def plot_regression(data, asset, start_date, end_date, log=False):
     else:
         y_label = 'Price in USD'
 
-    x = dates.reshape(-1, 1)
+    # Normalize dates
+    dates_normalized = dates - dates.mean()
+    x = dates_normalized.reshape(-1, 1)
     y = prices.values.reshape(-1, 1)
     
     model = LinearRegression()
