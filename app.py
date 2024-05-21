@@ -165,7 +165,7 @@ with tab3:
     data = load_and_prepare_data()
 
     # User inputs for asset selection and date range
-    asset = st.selectbox('Select Asset', ['S&P 500 PRICE IN USD', 'GOLD PRICE IN USD', 'BITCOIN PRICE IN USD', 'ETHEREUM PRICE IN USD'])
+    asset = st.selectbox('Select Asset', ['S&P 500', 'GOLD', 'BITCOIN', 'ETHEREUM'])
     start_date = st.date_input('Start date', pd.to_datetime('2021-01-01'))
     end_date = st.date_input('End date', pd.to_datetime('2022-01-01'))
 
