@@ -5,10 +5,8 @@ from datetime import datetime
 import io
 from matplotlib.ticker import MaxNLocator
 import numpy as np
-import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
 from matplotlib.dates import date2num
-
 
 def generate_asset_price_graph(asset_name, start_date, end_date):
     # Load the data
@@ -47,10 +45,9 @@ def generate_asset_price_graph(asset_name, start_date, end_date):
 
     return buf
 
-
 def generate_rescaled_plot(start_date, end_date):
     # Load the data specifying the column separator
-    data = pd.read_csv('DataCapstone.csv', delimiter=';', decimal=' ')
+    data = pd.read_csv('DataCapstone.csv', delimiter=';', decimal='.')
 
     # Strip any extra spaces from the column names
     data.columns = data.columns.str.strip()
@@ -102,8 +99,6 @@ def generate_rescaled_plot(start_date, end_date):
 
     return buf
 
-
-
 def generate_correlation_matrix():
     # Load the data
     data = pd.read_csv('DataCapstone.csv', delimiter=';', decimal=',')
@@ -128,7 +123,6 @@ def generate_correlation_matrix():
     buf.seek(0)
 
     return buf
-
 
 def load_and_prepare_data():
     # Load the data specifying the column separator
@@ -159,11 +153,22 @@ def generate_plot(data, asset, start_date, end_date):
     mask = (data['Date'] >= pd.to_datetime(start_date)) & (data['Date'] <= pd.to_datetime(end_date))
     filtered_data = data.loc[mask]
 
+    # Map asset names to column names
+    asset_column = {
+        'S&P 500': 'S&P 500 RETURN',
+        'GOLD': 'GOLD RETURN',
+        'BITCOIN': 'BITCOIN RETURN',
+        'ETHEREUM': 'ETHEREUM RETURN'
+    }
+
+    if asset not in asset_column:
+        raise ValueError(f"The asset {asset} is not valid. Please choose from 'S&P 500', 'GOLD', 'BITCOIN', or 'ETHEREUM'.")
+
     # Create plot
     fig, ax = plt.subplots(figsize=(12, 6))
 
     # Plot the selected asset's simple returns
-    ax.plot(filtered_data['Date'], filtered_data[f'{asset} RETURN'], label=f'{asset} Returns')
+    ax.plot(filtered_data['Date'], filtered_data[asset_column[asset]], label=f'{asset} Returns')
     ax.set_title(f'{asset} Returns')
     ax.set_ylabel('Simple Return (%)')
     ax.set_xlabel('Date')
@@ -177,29 +182,6 @@ def generate_plot(data, asset, start_date, end_date):
     plt.close(fig)
 
     return buf
-
-
-def load_and_prepare_data():
-    # Load the data specifying the column separator
-    data = pd.read_csv('DataCapstone.csv', delimiter=';', decimal='.')
-
-    # Strip any extra spaces from the column names
-    data.columns = data.columns.str.strip()
-
-    # Convert the data in the columns to float after replacing commas with periods and removing spaces
-    data['S&P 500 PRICE IN USD'] = data['S&P 500 PRICE IN USD'].str.replace(' ', '').str.replace(',', '.').astype(float)
-    data['GOLD PRICE IN USD'] = data['GOLD PRICE IN USD'].str.replace(' ', '').str.replace(',', '.').astype(float)
-    data['BITCOIN PRICE IN USD'] = data['BITCOIN PRICE IN USD'].str.replace(' ', '').str.replace(',', '.').astype(float)
-    data['ETHEREUM PRICE IN USD'] = data['ETHEREUM PRICE IN USD'].str.replace(' ', '').str.replace(',', '.').astype(float)
-
-    # Convert the 'Date' column to datetime type
-    data['Date'] = pd.to_datetime(data['Date'], format='%d/%m/%Y')
-
-    # Filter data to start from January 1, 2019
-    start_date = pd.Timestamp('2019-01-01')
-    data = data[data['Date'] >= start_date]
-
-    return data
 
 def plot_regression(data, asset, start_date, end_date, log=False):
     # Map asset names to column names
