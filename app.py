@@ -137,9 +137,9 @@ with tab1:
     
     # Input for asset price graph
     asset_name = st.selectbox("Select an asset", ["S&P 500 PRICE IN USD", "GOLD PRICE IN USD", "BITCOIN PRICE IN USD",
-                                                  "ETHEREUM PRICE IN USD"])
-    start_date = st.date_input("Start date", value=pd.to_datetime("2019-01-01"), key="start_date")
-    end_date = st.date_input("End date", value=pd.to_datetime("2019-12-31"), key="end_date")
+                                                  "ETHEREUM PRICE IN USD"], key="historical_asset")
+    start_date = st.date_input("Start date", value=pd.to_datetime("2019-01-01"), key="historical_start_date")
+    end_date = st.date_input("End date", value=pd.to_datetime("2019-12-31"), key="historical_end_date")
     
     # Automatically display the asset price graph based on the selected dates
     buf = generate_asset_price_graph(asset_name, start_date, end_date)
@@ -161,13 +161,13 @@ with tab2:
 with tab3:
     st.header("Returns")
     
-       # Load and prepare data
+    # Load and prepare data
     data = load_and_prepare_data()
 
     # User inputs for asset selection and date range
-    asset = st.selectbox('Select Asset', ['S&P 500', 'GOLD', 'BITCOIN', 'ETHEREUM'])
-    start_date = st.date_input('Start date', pd.to_datetime('2021-01-01'))
-    end_date = st.date_input('End date', pd.to_datetime('2022-01-01'))
+    asset = st.selectbox('Select Asset', ['S&P 500', 'GOLD', 'BITCOIN', 'ETHEREUM'], key="returns_asset")
+    start_date = st.date_input('Start date', pd.to_datetime('2021-01-01'), key="returns_start_date")
+    end_date = st.date_input('End date', pd.to_datetime('2022-01-01'), key="returns_end_date")
 
     # Generate and display the plot if dates and asset are selected
     if start_date and end_date and asset:
@@ -203,11 +203,11 @@ with tab5:
     asset_name = st.selectbox("Select an asset for regression", ["S&P 500", "GOLD", "BITCOIN", "ETHEREUM"], key="regression_asset")
 
     # Buttons for Linear Regression and Log-Linear Regression
-    regression_type = st.radio("Select Regression Type", ["Linear Regression", "Log-Linear Regression"], key="regression_type", label_visibility="visible")
+    regression_type = st.radio("Select Regression Type", ["Linear Regression", "Log-Linear Regression"], key="regression_type")
     
     # Date range selection
-    start_date = st.date_input('Start date', pd.to_datetime('2019-01-01'))
-    end_date = st.date_input('End date', pd.to_datetime('2022-01-01'))
+    start_date = st.date_input('Start date', pd.to_datetime('2019-01-01'), key="regression_start_date")
+    end_date = st.date_input('End date', pd.to_datetime('2022-01-01'), key="regression_end_date")
 
     # Placeholder content based on the selected regression type
     if regression_type and start_date and end_date and asset_name:
