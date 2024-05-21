@@ -163,6 +163,23 @@ with tab3:
         plot_buf = generate_plot(data, asset, start_date, end_date)
         st.image(plot_buf, caption=f'{asset} Returns from {start_date} to {end_date}')
     
+    st.write("""
+    Correlation between S&P 500 and Bitcoin returns: 0.3063, p-value: 2.968e-31
+    The correlation between S&P 500 and Bitcoin is statistically significant.
+
+    Correlation between S&P 500 and Ethereum returns: 0.2999, p-value: 5.807e-30
+    The correlation between S&P 500 and Ethereum is statistically significant.
+
+    Correlation between Gold and Bitcoin returns: 0.1374, p-value: 3.158e-07
+    The correlation between Gold and Bitcoin is statistically significant.
+
+    Correlation between Gold and Ethereum returns: 0.1291, p-value: 1.552e-06
+    The correlation between Gold and Ethereum is statistically significant.
+
+    Correlation between Bitcoin and Ethereum returns: 0.7605, p-value: 8.389e-260
+    The correlation between Bitcoin and Ethereum is statistically significant.
+    """, unsafe_allow_html=True)
+    
 with tab4:
     st.header("Correlation")
     
