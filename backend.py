@@ -118,10 +118,6 @@ def generate_plot(data, asset, start_date, end_date):
     if asset not in asset_column:
         raise ValueError(f"The asset {asset} is not valid. Please choose from 'S&P 500', 'GOLD', 'BITCOIN', or 'ETHEREUM'.")
 
-    # Debugging: Print the column names and first few rows of filtered_data
-    print(f"Columns available: {filtered_data.columns.tolist()}")
-    print(f"Filtered data head: \n{filtered_data.head()}")
-
     fig, ax = plt.subplots(figsize=(12, 6))
     ax.plot(filtered_data['Date'], filtered_data[asset_column[asset]], label=f'{asset} Returns')
     ax.set_title(f'{asset} Returns')
