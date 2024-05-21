@@ -124,3 +124,52 @@ def generate_correlation_matrix():
     buf.seek(0)
 
     return buf
+
+
+def load_and_prepare_data():
+    # Load the data specifying the column separator
+    data = pd.read_csv('DataCapstone.csv', delimiter=';', decimal='.')
+
+    # Strip any extra spaces from the column names
+    data.columns = data.columns.str.strip()
+
+    # Convert the data in the columns to float after replacing commas with periods and removing spaces
+    data['S&P 500 PRICE IN USD'] = data['S&P 500 PRICE IN USD'].str.replace(' ', '').str.replace(',', '.').astype(float)
+    data['GOLD PRICE IN USD'] = data['GOLD PRICE IN USD'].str.replace(' ', '').str.replace(',', '.').astype(float)
+    data['BITCOIN PRICE IN USD'] = data['BITCOIN PRICE IN USD'].str.replace(' ', '').str.replace(',', '.').astype(float)
+    data['ETHEREUM PRICE IN USD'] = data['ETHEREUM PRICE IN USD'].str.replace(' ', '').str.replace(',', '.').astype(float)
+
+    # Convert the 'Date' column to datetime type
+    data['Date'] = pd.to_datetime(data['Date'], format='%d/%m/%Y')
+
+    # Calculate simple returns as the percentage change between consecutive prices
+    data['S&P 500 RETURN'] = (data['S&P 500 PRICE IN USD'] / data['S&P 500 PRICE IN USD'].shift(1) - 1) * 100
+    data['GOLD RETURN'] = (data['GOLD PRICE IN USD'] / data['GOLD PRICE IN USD'].shift(1) - 1) * 100
+    data['BITCOIN RETURN'] = (data['BITCOIN PRICE IN USD'] / data['BITCOIN PRICE IN USD'].shift(1) - 1) * 100
+    data['ETHEREUM RETURN'] = (data['ETHEREUM PRICE IN USD'] / data['ETHEREUM PRICE IN USD'].shift(1) - 1) * 100
+
+    return data
+
+def generate_plot(data, asset, start_date, end_date):
+    # Filter data between start_date and end_date
+    mask = (data['Date'] >= pd.to_datetime(start_date)) & (data['Date'] <= pd.to_datetime(end_date))
+    filtered_data = data.loc[mask]
+
+    # Create plot
+    fig, ax = plt.subplots(figsize=(12, 6))
+
+    # Plot the selected asset's simple returns
+    ax.plot(filtered_data['Date'], filtered_data[f'{asset} RETURN'], label=f'{asset} Returns')
+    ax.set_title(f'{asset} Returns')
+    ax.set_ylabel('Simple Return (%)')
+    ax.set_xlabel('Date')
+    ax.grid(True)
+    ax.legend()
+
+    # Save the plot to a BytesIO object
+    buf = io.BytesIO()
+    plt.savefig(buf, format='png')
+    buf.seek(0)
+    plt.close(fig)
+
+    return buf

@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from backend import generate_asset_price_graph, generate_rescaled_plot, generate_correlation_matrix
+from backend import generate_asset_price_graph, generate_rescaled_plot, generate_correlation_matrix, load_and_prepare_data, generate_plot
 
 # Apply custom CSS for the desired styling
 st.markdown(
