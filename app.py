@@ -197,7 +197,7 @@ with tab5:
     st.header("Regression")
     
     # Load and prepare data
-data = load_and_prepare_data()
+    data = load_and_prepare_data()
 
 # Regression tab
 with st.tab("Regression"):
