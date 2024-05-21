@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from backend import generate_asset_price_graph, generate_rescaled_plot, generate_correlation_matrix, load_and_prepare_data, generate_plot
+from backend import generate_asset_price_graph, generate_rescaled_plot, generate_correlation_matrix, load_and_prepare_data, generate_plot, plot_regression
 
 # Apply custom CSS for the desired styling
 st.markdown(
@@ -196,16 +196,33 @@ with tab4:
 with tab5:
     st.header("Regression")
     
+    # Load and prepare data
+data = load_and_prepare_data()
+
+# Regression tab
+with st.tab("Regression"):
+    st.header("Regression")
+    
     # Asset selection
-    asset_name = st.selectbox("Select an asset for regression", ["S&P 500 PRICE IN USD", "GOLD PRICE IN USD", "BITCOIN PRICE IN USD", "ETHEREUM PRICE IN USD"], key="regression_asset")
+    asset_name = st.selectbox("Select an asset for regression", ["S&P 500", "GOLD", "BITCOIN", "ETHEREUM"], key="regression_asset")
 
     # Buttons for Linear Regression and Log-Linear Regression
     regression_type = st.radio("Select Regression Type", ["Linear Regression", "Log-Linear Regression"], key="regression_type", label_visibility="visible")
     
+    # Date range selection
+    start_date = st.date_input('Start date', pd.to_datetime('2019-01-01'))
+    end_date = st.date_input('End date', pd.to_datetime('2022-01-01'))
+
     # Placeholder content based on the selected regression type
-    if regression_type:
+    if regression_type and start_date and end_date and asset_name:
         st.write(f"You have selected {regression_type.replace('-', ' ').title()} for {asset_name}.")
-        # Add logic to display the regression analysis results based on `regression_type` and `asset_name`
+        
+        # Determine whether to apply log transformation
+        log = regression_type == "Log-Linear Regression"
+        
+        # Generate and display the plot
+        plot_buf = plot_regression(data, asset_name, start_date, end_date, log)
+        st.image(plot_buf, caption=f'{asset_name} {"Log " if log else ""}Price Evolution with Regression Line from {start_date} to {end_date}')
 
 # ARIMA tab
 with tab6:

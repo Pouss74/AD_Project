@@ -4,6 +4,10 @@ import seaborn as sns
 from datetime import datetime
 import io
 from matplotlib.ticker import MaxNLocator
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
+from matplotlib.dates import date2num
 
 
 def generate_asset_price_graph(asset_name, start_date, end_date):
@@ -165,6 +169,82 @@ def generate_plot(data, asset, start_date, end_date):
     ax.set_xlabel('Date')
     ax.grid(True)
     ax.legend()
+
+    # Save the plot to a BytesIO object
+    buf = io.BytesIO()
+    plt.savefig(buf, format='png')
+    buf.seek(0)
+    plt.close(fig)
+
+    return buf
+
+
+# Load and prepare the data
+def load_and_prepare_data():
+    # Load the data specifying the column separator
+    data = pd.read_csv('DataCapstone.csv', delimiter=';', decimal='.')
+
+    # Strip any extra spaces from the column names
+    data.columns = data.columns.str.strip()
+
+    # Convert the data in the columns to float after replacing commas with periods and removing spaces
+    data['S&P 500 PRICE IN USD'] = data['S&P 500 PRICE IN USD'].str.replace(' ', '').str.replace(',', '.').astype(float)
+    data['GOLD PRICE IN USD'] = data['GOLD PRICE IN USD'].str.replace(' ', '').str.replace(',', '.').astype(float)
+    data['BITCOIN PRICE IN USD'] = data['BITCOIN PRICE IN USD'].str.replace(' ', '').str.replace(',', '.').astype(float)
+    data['ETHEREUM PRICE IN USD'] = data['ETHEREUM PRICE IN USD'].str.replace(' ', '').str.replace(',', '.').astype(float)
+
+    # Convert the 'Date' column to datetime type
+    data['Date'] = pd.to_datetime(data['Date'], format='%d/%m/%Y')
+
+    # Filter data to start from January 1, 2019
+    start_date = pd.Timestamp('2019-01-01')
+    data = data[data['Date'] >= start_date]
+
+    return data
+
+# Function to perform linear regression and plot results
+def plot_regression(data, asset, start_date, end_date, log=False):
+    # Filter data between start_date and end_date
+    mask = (data['Date'] >= pd.to_datetime(start_date)) & (data['Date'] <= pd.to_datetime(end_date))
+    filtered_data = data.loc[mask]
+
+    # Convert date to ordinal numbers for regression analysis
+    dates = date2num(filtered_data['Date'])
+    prices = filtered_data[f'{asset} PRICE IN USD']
+
+    if log:
+        prices = np.log(prices)
+        y_label = 'Log Price in USD'
+    else:
+        y_label = 'Price in USD'
+
+    # Reshape data for scikit-learn
+    x = dates.reshape(-1, 1)
+    y = prices.values.reshape(-1, 1)
+    
+    # Create and fit the model
+    model = LinearRegression()
+    model.fit(x, y)
+    
+    # Predict values
+    y_pred = model.predict(x)
+    
+    # Create plot
+    fig, ax = plt.subplots(figsize=(12, 6))
+
+    # Plot the actual data
+    ax.plot(filtered_data['Date'], y, color='black', label=f'{asset} Price')
+    
+    # Overlay the regression line
+    ax.plot(filtered_data['Date'], y_pred, color='red', linewidth=2, linestyle='--', label=f'{asset} Regression Line')
+    ax.set_title(f'{asset} {"Log " if log else ""}Price Evolution with Regression Line')
+    ax.set_xlabel('Date')
+    ax.set_ylabel(y_label)
+    ax.legend()
+    ax.grid(True)
+
+    # Adjust the x-axis to start from the specific date
+    ax.set_xlim([pd.to_datetime(start_date), pd.to_datetime(end_date)])
 
     # Save the plot to a BytesIO object
     buf = io.BytesIO()
