@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 from backend import generate_asset_price_graph, generate_rescaled_plot, generate_correlation_matrix, load_and_prepare_data, generate_plot, plot_regression, compute_regression_statistics
 
-# Apply custom CSS for the desired styling
 st.markdown(
     """
     <style>
@@ -91,7 +90,6 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# Function to get forecast image path based on selection
 def get_forecast_image_path(asset, model):
     forecast_images = {
         "Bitcoin": {
@@ -107,7 +105,6 @@ def get_forecast_image_path(asset, model):
     }
     return forecast_images[asset][model]
 
-# App title
 st.markdown(
     """
     <div class="disclaimer">
@@ -129,14 +126,11 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# Add some space before the tabs
 st.markdown("<br><br>", unsafe_allow_html=True)
 
-# Create tabs
 tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs(
     ["Historical Data", "Re-Scale Graphic", "Returns", "Correlation", "Regression", "ARIMA", "LSTM 1", "LSTM 2"])
 
-# Historical Data tab
 with tab1:
     st.header("Historical Data")
     
@@ -148,7 +142,6 @@ with tab1:
     buf = generate_asset_price_graph(asset_name, start_date, end_date)
     st.image(buf, use_column_width=True)
 
-# Re-Scale Graphic tab
 with tab2:
     st.header("Re-Scale Graphic")
 
@@ -158,7 +151,6 @@ with tab2:
     buf = generate_rescaled_plot(start_date, end_date)
     st.image(buf, use_column_width=True)
 
-# Returns tab
 with tab3:
     st.header("Returns")
     
@@ -171,7 +163,6 @@ with tab3:
         plot_buf = generate_plot(data, asset, start_date, end_date)
         st.image(plot_buf, caption=f'{asset} Returns from {start_date} to {end_date}')
     
-# Correlation tab
 with tab4:
     st.header("Correlation")
     
@@ -188,7 +179,6 @@ with tab4:
     </div>
     """, unsafe_allow_html=True)
 
-# Regression tab
 with tab5:
     st.header("Regression")
     
@@ -211,7 +201,6 @@ with tab5:
         
         st.write(pd.DataFrame([regression_stats]).set_index('Asset'))
 
-# ARIMA tab
 with tab6:
     st.header("ARIMA")
     
@@ -219,7 +208,6 @@ with tab6:
     arima_image_path = get_forecast_image_path(asset_name, "ARIMA")
     st.image(arima_image_path, use_column_width=True)
 
-# LSTM 1 tab
 with tab7:
     st.header("LSTM 1")
     
@@ -246,7 +234,6 @@ with tab7:
         </div>
         """, unsafe_allow_html=True)
 
-# LSTM 2 tab
 with tab8:
     st.header("LSTM 2")
     
@@ -273,7 +260,6 @@ with tab8:
         </div>
         """, unsafe_allow_html=True)
 
-# Footer
 st.markdown(
     """
     <div class="footer">
