@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from backend import generate_asset_price_graph, generate_rescaled_plot, generate_correlation_matrix, load_and_prepare_data, generate_plot, plot_regression
+from backend import generate_asset_price_graph, generate_rescaled_plot, generate_correlation_matrix, load_and_prepare_data, generate_plot, plot_regression, compute_regression_statistics
 
 # Apply custom CSS for the desired styling
 st.markdown(
@@ -80,6 +80,12 @@ st.markdown(
         font-size: 1.1em;
         line-height: 1.6;
     }
+    .footer {
+        font-size: 0.9em;
+        color: #ffffff;
+        text-align: center;
+        margin-top: 20px;
+    }
     </style>
     """,
     unsafe_allow_html=True
@@ -87,7 +93,6 @@ st.markdown(
 
 # Function to get forecast image path based on selection
 def get_forecast_image_path(asset, model):
-    # Define the mapping of asset and model to image file paths
     forecast_images = {
         "Bitcoin": {
             "ARIMA": "forecast/Bitcoin Forecast ARIMA Model.png",
@@ -135,13 +140,11 @@ tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs(
 with tab1:
     st.header("Historical Data")
     
-    # Input for asset price graph
     asset_name = st.selectbox("Select an asset", ["S&P 500 PRICE IN USD", "GOLD PRICE IN USD", "BITCOIN PRICE IN USD",
                                                   "ETHEREUM PRICE IN USD"], key="historical_asset")
     start_date = st.date_input("Start date", value=pd.to_datetime("2019-01-01"), key="historical_start_date")
     end_date = st.date_input("End date", value=pd.to_datetime("2019-12-31"), key="historical_end_date")
     
-    # Automatically display the asset price graph based on the selected dates
     buf = generate_asset_price_graph(asset_name, start_date, end_date)
     st.image(buf, use_column_width=True)
 
@@ -149,11 +152,9 @@ with tab1:
 with tab2:
     st.header("Re-Scale Graphic")
 
-    # Input for date range
     start_date = st.date_input("Start date", value=pd.to_datetime("2019-01-01"), key="rescale_start_date")
     end_date = st.date_input("End date", value=pd.to_datetime("2019-12-31"), key="rescale_end_date")
     
-    # Automatically display the normalized graph based on the selected date range
     buf = generate_rescaled_plot(start_date, end_date)
     st.image(buf, use_column_width=True)
 
@@ -161,15 +162,11 @@ with tab2:
 with tab3:
     st.header("Returns")
     
-    # Load and prepare data
     data = load_and_prepare_data()
-
-    # User inputs for asset selection and date range
     asset = st.selectbox('Select Asset', ['S&P 500', 'GOLD', 'BITCOIN', 'ETHEREUM'], key="returns_asset")
     start_date = st.date_input('Start date', pd.to_datetime('2021-01-01'), key="returns_start_date")
     end_date = st.date_input('End date', pd.to_datetime('2022-01-01'), key="returns_end_date")
 
-    # Generate and display the plot if dates and asset are selected
     if start_date and end_date and asset:
         plot_buf = generate_plot(data, asset, start_date, end_date)
         st.image(plot_buf, caption=f'{asset} Returns from {start_date} to {end_date}')
@@ -178,7 +175,6 @@ with tab3:
 with tab4:
     st.header("Correlation")
     
-    # Automatically display the correlation matrix
     buf = generate_correlation_matrix()
     st.image(buf, use_column_width=True)
     
@@ -196,38 +192,30 @@ with tab4:
 with tab5:
     st.header("Regression")
     
-    # Load and prepare data
     data = load_and_prepare_data()
     
-    # Asset selection
     asset_name = st.selectbox("Select an asset for regression", ["S&P 500", "GOLD", "BITCOIN", "ETHEREUM"], key="regression_asset")
-
-    # Buttons for Linear Regression and Log-Linear Regression
     regression_type = st.radio("Select Regression Type", ["Linear Regression", "Log-Linear Regression"], key="regression_type")
-    
-    # Date range selection
     start_date = st.date_input('Start date', pd.to_datetime('2019-01-01'), key="regression_start_date")
     end_date = st.date_input('End date', pd.to_datetime('2022-01-01'), key="regression_end_date")
 
-    # Placeholder content based on the selected regression type
     if regression_type and start_date and end_date and asset_name:
         st.write(f"You have selected {regression_type.replace('-', ' ').title()} for {asset_name}.")
         
-        # Determine whether to apply log transformation
         log = regression_type == "Log-Linear Regression"
         
-        # Generate and display the plot
         plot_buf = plot_regression(data, asset_name, start_date, end_date, log)
         st.image(plot_buf, caption=f'{asset_name} {"Log " if log else ""}Price Evolution with Regression Line from {start_date} to {end_date}')
+        
+        regression_stats = compute_regression_statistics(data, asset_name, start_date, end_date, log)
+        
+        st.write(pd.DataFrame([regression_stats]).set_index('Asset'))
 
 # ARIMA tab
 with tab6:
     st.header("ARIMA")
     
-    # Asset selection
     asset_name = st.selectbox("Select an asset for ARIMA model", ["Bitcoin", "Ethereum"], key="arima_asset")
-    
-    # Automatically display the ARIMA forecast based on the selected asset
     arima_image_path = get_forecast_image_path(asset_name, "ARIMA")
     st.image(arima_image_path, use_column_width=True)
 
@@ -235,10 +223,7 @@ with tab6:
 with tab7:
     st.header("LSTM 1")
     
-    # Asset selection
     asset_name = st.selectbox("Select an asset for LSTM 1 model", ["Bitcoin", "Ethereum"], key="lstm1_asset")
-    
-    # Automatically display the LSTM 1 forecast based on the selected asset
     lstm1_image_path = get_forecast_image_path(asset_name, "LSTM")
     st.image(lstm1_image_path, use_column_width=True)
     
@@ -265,10 +250,7 @@ with tab7:
 with tab8:
     st.header("LSTM 2")
     
-    # Asset selection
     asset_name = st.selectbox("Select an asset for LSTM 2 model", ["Bitcoin", "Ethereum"], key="lstm2_asset")
-    
-    # Automatically display the LSTM 2 forecast based on the selected asset
     lstm2_image_path = get_forecast_image_path(asset_name, "LSTM with correlation")
     st.image(lstm2_image_path, use_column_width=True)
     
@@ -290,3 +272,13 @@ with tab8:
         R-squared Score: 0.9114275560790139
         </div>
         """, unsafe_allow_html=True)
+
+# Footer
+st.markdown(
+    """
+    <div class="footer">
+    Made with 🐍 by Maxime Poussard
+    </div>
+    """,
+    unsafe_allow_html=True
+)

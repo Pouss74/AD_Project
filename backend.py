@@ -183,8 +183,19 @@ def generate_plot(data, asset, start_date, end_date):
 
     return buf
 
-def plot_regression(data, asset, start_date, end_date, log=False):
-    # Map asset names to column names
+def load_and_prepare_data():
+    data = pd.read_csv('DataCapstone.csv', delimiter=';', decimal='.')
+
+    data.columns = data.columns.str.strip()
+    data['S&P 500 PRICE IN USD'] = data['S&P 500 PRICE IN USD'].str.replace(' ', '').str.replace(',', '.').astype(float)
+    data['GOLD PRICE IN USD'] = data['GOLD PRICE IN USD'].str.replace(' ', '').str.replace(',', '.').astype(float)
+    data['BITCOIN PRICE IN USD'] = data['BITCOIN PRICE IN USD'].str.replace(' ', '').str.replace(',', '.').astype(float)
+    data['ETHEREUM PRICE IN USD'] = data['ETHEREUM PRICE IN USD'].str.replace(' ', '').str.replace(',', '.').astype(float)
+    data['Date'] = pd.to_datetime(data['Date'], format='%d/%m/%Y')
+    return data
+
+
+def compute_regression_statistics(data, asset, start_date, end_date, log=False):
     asset_column = {
         'S&P 500': 'S&P 500 PRICE IN USD',
         'GOLD': 'GOLD PRICE IN USD',
@@ -192,11 +203,51 @@ def plot_regression(data, asset, start_date, end_date, log=False):
         'ETHEREUM': 'ETHEREUM PRICE IN USD'
     }
     
-    # Filter data between start_date and end_date
     mask = (data['Date'] >= pd.to_datetime(start_date)) & (data['Date'] <= pd.to_datetime(end_date))
     filtered_data = data.loc[mask]
 
-    # Convert date to ordinal numbers for regression analysis
+    dates = date2num(filtered_data['Date'])
+    prices = filtered_data[asset_column[asset]]
+
+    if log:
+        prices = np.log(prices)
+        label_prefix = 'Log '
+    else:
+        label_prefix = ''
+
+    x = dates.reshape(-1, 1)
+    y = prices.values.reshape(-1, 1)
+    
+    model = LinearRegression()
+    model.fit(x, y)
+    
+    y_pred = model.predict(x)
+    r_squared = model.score(x, y)
+    n = len(y)
+    p = 1
+    r_squared_adj = 1 - (1 - r_squared) * ((n - 1) / (n - p - 1))
+    
+    regression_stats = {
+        'Coefficient': model.coef_[0][0],
+        'Intercept': model.intercept_[0],
+        'R-squared': r_squared,
+        'Adjusted R-squared': r_squared_adj,
+        'Asset': f'{label_prefix}{asset_column[asset]}'
+    }
+    
+    return regression_stats
+
+def plot_regression(data, asset, start_date, end_date, log=False):
+    asset_column = {
+        'S&P 500': 'S&P 500 PRICE IN USD',
+        'GOLD': 'GOLD PRICE IN USD',
+        'BITCOIN': 'BITCOIN PRICE IN USD',
+        'ETHEREUM': 'ETHEREUM PRICE IN USD'
+    }
+    
+    mask = (data['Date'] >= pd.to_datetime(start_date)) & (data['Date'] <= pd.to_datetime(end_date))
+    filtered_data = data.loc[mask]
+
     dates = date2num(filtered_data['Date'])
     prices = filtered_data[asset_column[asset]]
 
@@ -206,35 +257,25 @@ def plot_regression(data, asset, start_date, end_date, log=False):
     else:
         y_label = 'Price in USD'
 
-    # Reshape data for scikit-learn
     x = dates.reshape(-1, 1)
     y = prices.values.reshape(-1, 1)
     
-    # Create and fit the model
     model = LinearRegression()
     model.fit(x, y)
     
-    # Predict values
     y_pred = model.predict(x)
     
-    # Create plot
     fig, ax = plt.subplots(figsize=(12, 6))
 
-    # Plot the actual data
     ax.plot(filtered_data['Date'], y, color='black', label=f'{asset} Price')
-    
-    # Overlay the regression line
     ax.plot(filtered_data['Date'], y_pred, color='red', linewidth=2, linestyle='--', label=f'{asset} Regression Line')
     ax.set_title(f'{asset} {"Log " if log else ""}Price Evolution with Regression Line')
     ax.set_xlabel('Date')
     ax.set_ylabel(y_label)
     ax.legend()
     ax.grid(True)
-
-    # Adjust the x-axis to start from the specific date
     ax.set_xlim([pd.to_datetime(start_date), pd.to_datetime(end_date)])
 
-    # Save the plot to a BytesIO object
     buf = io.BytesIO()
     plt.savefig(buf, format='png')
     buf.seek(0)
