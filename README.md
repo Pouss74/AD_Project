@@ -30,3 +30,9 @@ you have the CSV file of the database named DataCapstone.csv in the same directo
 The CSV file should use a semicolon (;) as the delimiter and commas (,) for decimal separation. Open the Jupyter
 Notebook and run the cells to execute the analysis.
 If you have any questions for running the code, please ask me at maxime.poussard@unil.ch.
+
+3. STREAMLIT INTERFACE
+
+The Streamlit application provides an interactive platform for analyzing the interconnectivity between digital assets (Bitcoin and Ethereum) and traditional financial assets (Gold and S&P 500). Users can interact with data, visualize trends, and forecast asset prices through multiple predictive models, including Linear Regression, ARIMA, and LSTM. Due to their computational intensity, ARIMA and LSTM predictions are displayed as precomputed images, ensuring quick and seamless user experience. The application allows for individual and comparative analysis of asset prices and returns, supported by a correlation matrix to show relationships between different assets. Users can customize their analysis by selecting different asset models, date ranges, and predictive models. The interface displays individual and comparative price graphs, correlation matrices, returns, and correlations between asset returns, providing clear and interactive visualizations to aid in data-driven decision-making.
+
+Website : https://programmation-capstone.streamlit.app
